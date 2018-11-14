@@ -3,7 +3,7 @@
     <Modele nom="monModele">
         <Entite nom="Meuble">
             <Attribut nom="pied" type="Integer"/>
-            <Attribut nom="test1" type="Integer"/>
+            <Attribut nom="test1" type="Chaise"/>
         </Entite>
         <Entite nom="Chaise" subtypeof="Meuble">
             <Attribut nom="test" type="Integer"/>

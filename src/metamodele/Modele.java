@@ -25,14 +25,4 @@ public class Modele {
         return entites;
     }
 
-
-    public void toJava(){
-        for(Entite entite:entites){
-            entite.generateCodeEntiteToJava();
-        }
-    }
-
-    public void acceptGenerateur(Generateur generateur){
-        generateur.generateModeleToJava(this);
-    }
 }

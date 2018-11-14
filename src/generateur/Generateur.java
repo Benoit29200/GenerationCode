@@ -20,23 +20,18 @@ public class Generateur {
 
     public void generate(String filename, String generateFolder){
         Modele modele = Parser.getInstance().parse(filename);
-        modele.acceptGenerateur(this);
 
         for(Entite entite:modele.getEntites()){
             try{
                 File repertory = new File(modele.getNom());
                 repertory.mkdirs();
                 FileOutputStream fos = new FileOutputStream(new File(modele.getNom()+"/"+entite.getNom()+".java"));
-                fos.write(entite.getCodeJava().getBytes());
+                fos.write(entite.generateCodeEntiteToJava().getBytes());
                 fos.close();
             }catch(Exception e){
                 System.err.println("Erreur lors de l'écriture du code de l'entité '"+entite.getNom()+"'.\n"+e.getMessage());
             }
         }
-    }
-
-    public void generateModeleToJava(Modele m){
-        m.toJava();
     }
 
 

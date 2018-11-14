@@ -26,12 +26,12 @@ public class Attribut {
     }
 
 
-    public void acceptEntiteForDefinition(Entite e){
-        e.definitionAttributToJava(this);
+    public String acceptEntiteForDefinition(Entite e){
+        return e.definitionAttributToJava(this);
     }
 
-    public void acceptEntiteForGetterSetter(Entite e){
-        e.getterSetterAttributToJava(this);
+    public String acceptEntiteForGetterSetter(Entite e){
+        return e.getterSetterAttributToJava(this);
     }
 
     private String getter(){
@@ -45,6 +45,5 @@ public class Attribut {
     private String setter(){
         return "public void set" + StringUtils.capitalize(this.nom) + "("+this.type+" "+this.nom+") { this." + this.nom + " = "+this.nom+"; }";
     }
-
 
 }

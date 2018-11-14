@@ -13,9 +13,7 @@ public class Entite {
 
     Modele parent;
 
-    String codeJava="";
-
-    String subtypeof;
+    String subtypeof="";
 
     public Entite(String nom,Modele parent,String subtypeof) {
         this.nom = StringUtils.capitalize(nom);
@@ -23,13 +21,9 @@ public class Entite {
         this.parent = parent;
         this.subtypeof = subtypeof;
     }
-//
 
     public ArrayList<Attribut> getAttributs() {
         return attributs;
-    }
-    public String getCodeJava() {
-        return codeJava;
     }
 
     public String getNom() {
@@ -44,45 +38,65 @@ public class Entite {
         return subtypeof;
     }
 
-    public void generateCodeEntiteToJava(){
+    public String generateCodeEntiteToJava(){
 
-        codeJava += "package "+this.parent.getNom()+";";
+        String code="";
+        code += this.packageEntite();
+        code += this.entete();
+        code += this.definitionAttribut();
+        code += this.constructor();
+        code += this.getterSetterAttribut();
+        code += "}";
+        return code;
+    }
 
+
+    private String packageEntite(){
+        return "package "+this.parent.getNom()+";";
+    }
+
+    private String entete(){
         if(subtypeof != ""){
             if(!Verificateur.getInstance().SubtypeIsValid(this)){
                 System.exit(0);
+                return null;
             }
             else{
-                codeJava += "public class "+this.nom+" extends "+this.subtypeof+" {";
+                return "public class "+this.nom+" extends "+this.subtypeof+" {";
             }
         }else{
-            codeJava += "public class "+this.nom+" {";
+            return "public class "+this.nom+" {";
         }
-
-
-        for(Attribut element:attributs){
-           element.acceptEntiteForDefinition(this);
-        }
-
-        codeJava += generateConstructor();
-
-        for(Attribut element:attributs){
-            element.acceptEntiteForGetterSetter(this);
-        }
-        codeJava += "}";
     }
 
+    private String definitionAttribut(){
+        String definitions="";
+        for(Attribut element:attributs){
+            definitions += element.acceptEntiteForDefinition(this);
+        }
+        return definitions;
+    }
 
-    private String generateConstructor(){
+    private String constructor(){
         return "public "+ this.nom +"() { }";
     }
 
-    protected void definitionAttributToJava(Attribut attribut){
-        codeJava += attribut.DefinitionToJava();
+    private String getterSetterAttribut(){
+        String getterSetter="";
+        for(Attribut element:attributs){
+            getterSetter += element.acceptEntiteForGetterSetter(this);
+        }
+        return getterSetter;
     }
 
-    protected void getterSetterAttributToJava(Attribut attribut){
-        codeJava += attribut.getterSetterToJava();
+
+
+    protected String definitionAttributToJava(Attribut attribut){
+        return attribut.DefinitionToJava();
+    }
+
+    protected String getterSetterAttributToJava(Attribut attribut){
+        return attribut.getterSetterToJava();
     }
 
 }
