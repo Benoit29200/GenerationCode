@@ -1,0 +1,18 @@
+
+<Code>
+    <Modele nom="monModele">
+        <Entite nom="Meuble">
+            <Attribut nom="pied" type="Integer"/>
+            <Attribut nom="test1" type="Integer"/>
+        </Entite>
+        <Entite nom="Chaise" subtypeof="Meuble">
+            <Attribut nom="test" type="Integer"/>
+            <Attribut nom="matiere" type="String"/>
+        </Entite>
+
+        <Entite nom="Tabouret">
+            <Attribut nom="dossier" type="String"/>
+            <Attribut nom="matiere" type="String"/>
+        </Entite>
+    </Modele>
+</Code>
