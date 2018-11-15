@@ -2,6 +2,9 @@ package verification;
 
 import metamodele.Attribut;
 import metamodele.Entite;
+import metamodele.Modele;
+import parametrage.Parametrage;
+import parametrage.PrimitiveParametrage;
 
 public class Verificateur {
     private static Verificateur ourInstance = new Verificateur();
@@ -40,6 +43,15 @@ public class Verificateur {
         return isValid;
     }
 
+    public boolean isPrimitive(String type,String parametrageFilename){
+        Parametrage.getInstance().parametrage(parametrageFilename);
+        for(PrimitiveParametrage primitive: Parametrage.getInstance().getPrimitives()){
+            if(primitive.getName().equals(type)) return true;
+        }
+        return false;
+    }
+
+
     private boolean subtypeofIsPresent(Entite source){
         for(Entite entite:source.getParent().getEntites()){
             if(entite.getNom().equals(source.getSubtypeof())){
@@ -58,5 +70,7 @@ public class Verificateur {
         }
         return null;
     }
+
+
 
 }

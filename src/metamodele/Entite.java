@@ -1,6 +1,9 @@
 package metamodele;
 
 import com.sun.xml.internal.ws.util.StringUtils;
+import metamodele.attribut.AssociationSimple;
+import metamodele.attribut.Primitive;
+import metamodele.attribut.UnresolvedAttribut;
 import verification.Verificateur;
 
 import java.util.ArrayList;
@@ -13,9 +16,9 @@ public class Entite {
 
     Modele parent;
 
-    String subtypeof="";
+    String subtypeof = "";
 
-    public Entite(String nom,Modele parent,String subtypeof) {
+    public Entite(String nom, Modele parent, String subtypeof) {
         this.nom = StringUtils.capitalize(nom);
         this.attributs = new ArrayList<>();
         this.parent = parent;
@@ -38,65 +41,87 @@ public class Entite {
         return subtypeof;
     }
 
-    public String generateCodeEntiteToJava(){
+    public String generateCodeEntiteToJava() {
+        this.traitementUnresolvedAttribut();
 
-        String code="";
-        code += this.packageEntite();
-        code += this.entete();
-        code += this.definitionAttribut();
-        code += this.constructor();
-        code += this.getterSetterAttribut();
-        code += "}";
-        return code;
+        return this.packageEntite()
+                + this.entete()
+                + this.definitionAttribut()
+                + this.constructor()
+                + this.getterSetterAttribut()
+                + "}";
     }
 
 
-    private String packageEntite(){
-        return "package "+this.parent.getNom()+";";
+    private String packageEntite() {
+        return "package " + this.parent.getNom() + ";";
     }
 
-    private String entete(){
-        if(subtypeof != ""){
-            if(!Verificateur.getInstance().SubtypeIsValid(this)){
+    private String entete() {
+        if (subtypeof != "") {
+            if (!Verificateur.getInstance().SubtypeIsValid(this)) {
                 System.exit(0);
                 return null;
+            } else {
+                return "public class " + this.nom + " extends " + this.subtypeof + " {";
             }
-            else{
-                return "public class "+this.nom+" extends "+this.subtypeof+" {";
-            }
-        }else{
-            return "public class "+this.nom+" {";
+        } else {
+            return "public class " + this.nom + " {";
         }
     }
 
-    private String definitionAttribut(){
+    private String definitionAttribut() {
         String definitions="";
-        for(Attribut element:attributs){
+        for (Attribut element : attributs) {
             definitions += element.acceptEntiteForDefinition(this);
         }
         return definitions;
     }
 
-    private String constructor(){
-        return "public "+ this.nom +"() { }";
+    private void traitementUnresolvedAttribut() {
+        for (Attribut element : attributs) {
+            element.acceptEntiteForUnresolvedAttribut(this);
+        }
     }
 
-    private String getterSetterAttribut(){
-        String getterSetter="";
-        for(Attribut element:attributs){
+    private String constructor() {
+        return "public " + this.nom + "() { }";
+    }
+
+    private String getterSetterAttribut() {
+        String getterSetter = "";
+        for (Attribut element : attributs) {
             getterSetter += element.acceptEntiteForGetterSetter(this);
         }
         return getterSetter;
     }
 
 
-
-    protected String definitionAttributToJava(Attribut attribut){
-        return attribut.DefinitionToJava();
+    public String definitionPrimitiveToJava(Primitive primitive) {
+        return primitive.DefinitionToJava();
     }
 
-    protected String getterSetterAttributToJava(Attribut attribut){
-        return attribut.getterSetterToJava();
+    public String getterSetterAssociationSimpleToJava(AssociationSimple assoSimple) {
+        return assoSimple.getterSetterToJava();
     }
 
+    public String definitionAssociationSimpleToJava(AssociationSimple assoSimple) {
+        return assoSimple.DefinitionToJava();
+    }
+
+    public String getterSetterPrimitiveToJava(Primitive primitive) {
+        return primitive.getterSetterToJava();
+    }
+
+    public void tryToResolveUnresolvedAttribut(UnresolvedAttribut nonConnu) {
+        for (Entite entite : this.parent.getEntites()) {
+            if (nonConnu.getType().equals(entite.getNom())) {
+                //TODO  on doit enlever le UnresolvedSymbol et créer une association simple
+                AssociationSimple assoSimple = new AssociationSimple(nonConnu.getNom(), entite);
+                this.getAttributs().add(assoSimple);
+                this.getAttributs().remove(nonConnu);
+
+            }
+        }
+    }
 }

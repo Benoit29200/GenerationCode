@@ -18,14 +18,14 @@ public class Generateur {
     private Generateur() {
     }
 
-    public void generate(String filename, String generateFolder){
-        Modele modele = Parser.getInstance().parse(filename);
+    public void generate(String filename, String filenameParametrage,String generateFolder){
+        Modele modele = Parser.getInstance().parse(filename,filenameParametrage);
 
         for(Entite entite:modele.getEntites()){
             try{
-                File repertory = new File(modele.getNom());
+                File repertory = new File(generateFolder+"/"+modele.getNom());
                 repertory.mkdirs();
-                FileOutputStream fos = new FileOutputStream(new File(modele.getNom()+"/"+entite.getNom()+".java"));
+                FileOutputStream fos = new FileOutputStream(new File(generateFolder+"/"+modele.getNom()+"/"+entite.getNom()+".java"));
                 fos.write(entite.generateCodeEntiteToJava().getBytes());
                 fos.close();
             }catch(Exception e){

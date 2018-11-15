@@ -3,7 +3,10 @@ package parser;
 import metamodele.Attribut;
 import metamodele.Entite;
 import metamodele.Modele;
+import metamodele.attribut.Primitive;
+import metamodele.attribut.UnresolvedAttribut;
 import org.w3c.dom.Node;
+import verification.Verificateur;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
@@ -23,11 +26,11 @@ public class Parser {
     }
 
 
-    public Modele parse(String filename) {
+    public Modele parse(String filename,String parametrageFilename) {
 
         try {
             final org.w3c.dom.Element racine = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(filename)).getDocumentElement();
-            parseModele(racine);
+            parseModele(racine,parametrageFilename);
             return this.modele;
 
         } catch (Exception e) {
@@ -37,7 +40,7 @@ public class Parser {
     }
 
 
-    private void parseModele(org.w3c.dom.Element node) {
+    private void parseModele(org.w3c.dom.Element node, String parametrageFilename) {
         try {
 
             for (int i = 0; i < node.getChildNodes().getLength(); i++) {
@@ -48,7 +51,7 @@ public class Parser {
                         case "Modele":{
                             String nomModele = elem.getAttribute("nom");
                             this.modele = new Modele(nomModele);
-                            parseEntite(elem,this.modele);
+                            parseEntite(elem,this.modele,parametrageFilename);
                         break;
                         }
                     }
@@ -59,7 +62,7 @@ public class Parser {
         }
     }
 
-    private void parseEntite(org.w3c.dom.Element node,Modele parent) {
+    private void parseEntite(org.w3c.dom.Element node,Modele parent,String parametrageFilename) {
         try {
 
             for (int i = 0; i < node.getChildNodes().getLength(); i++) {
@@ -72,7 +75,7 @@ public class Parser {
                             String nomEntite = elem.getAttribute("nom");
                             Entite monEntite = new Entite(nomEntite,this.modele,subtypeof);
                             parent.getEntites().add(monEntite);
-                            parseAttribut(elem,monEntite);
+                            parseAttribut(elem,monEntite,parametrageFilename);
 
                             break;
                         }
@@ -84,7 +87,7 @@ public class Parser {
         }
     }
 
-    private void parseAttribut(org.w3c.dom.Element node,Entite parent) {
+    private void parseAttribut(org.w3c.dom.Element node,Entite parent,String parametrageFilename) {
         try {
 
             for (int i = 0; i < node.getChildNodes().getLength(); i++) {
@@ -95,8 +98,16 @@ public class Parser {
                         case "Attribut":{
                             String nomAttribut = elem.getAttribute("nom");
                             String typeAttribut = elem.getAttribute("type");
-                           Attribut monAttribut = new Attribut(nomAttribut,typeAttribut);
-                           parent.getAttributs().add(monAttribut);
+
+                            if(Verificateur.getInstance().isPrimitive(typeAttribut,parametrageFilename)){
+                                Attribut monAttribut = new Primitive(nomAttribut,typeAttribut);
+                                parent.getAttributs().add(monAttribut);
+                            }
+                            else{
+                                // Création d'un UnresolvedAttribut
+                                UnresolvedAttribut attributNonConnu = new UnresolvedAttribut(nomAttribut,typeAttribut);
+                                parent.getAttributs().add(attributNonConnu);
+                            }
                             break;
                         }
                     }

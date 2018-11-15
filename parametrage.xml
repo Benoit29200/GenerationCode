@@ -1,0 +1,8 @@
+<Parametrage>
+    <primitive name="String" type="String"/>
+    <primitive name="Integer" type="Integer"/>
+    <primitive name="Float" type="float"/>
+    <primitive name="Double" type="Double"/>
+    <primitive name="Boolean" type="Boolean"/>
+    <primitive name="boolean" type="boolean"/>
+</Parametrage>
