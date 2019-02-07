@@ -1,5 +1,7 @@
 package modele.metamodeleJava;
 
+import generateur.GenerateurCodeJava;
+
 import java.util.ArrayList;
 
 public class ConstructorParams extends Constructor {
@@ -30,6 +32,11 @@ public class ConstructorParams extends Constructor {
 
     public void setParams(ArrayList<Param> params) {
         this.params = params;
+    }
+
+    @Override
+    public void generateCodeConstructor(GenerateurCodeJava generateur, StringBuffer code) {
+        generateur.generateCodeConstructorParams(this,code);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package modele.metamodeleJava;
 
+import generateur.GenerateurCodeJava;
+
 public class Getter extends Accesseur {
 
     public Getter(String nom, String type) {
@@ -24,6 +26,11 @@ public class Getter extends Accesseur {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public void generateAccesseur(GenerateurCodeJava generateur, StringBuffer code) {
+        generateur.generateCodeGetter(this,code);
     }
 
     @Override

@@ -70,7 +70,8 @@ public class ParserMetamodeleJava {
                     switch (elem.getNodeName()) {
                         case "Class": {
                             String nomClass = elem.getAttribute("nom");
-                            Class classe = new Class(nomClass);
+                            String subtypeof = elem.getAttribute("subtypeof");
+                            Class classe = new Class(nomClass, subtypeof);
                             parent.getClasses().add(classe);
                             parseClass(elem,classe, parametrageFilename);
                             break;
@@ -96,6 +97,13 @@ public class ParserMetamodeleJava {
                             String typeAttribut = elem.getAttribute("type");
                             Attribut attribut = new Attribut(nomAttribut, typeAttribut);
                             parent.getAttributs().add(attribut);
+                            break;
+                        }
+
+                        case "Import": {
+                            String nomImport = elem.getAttribute("nom");
+                            Import anImport = new Import(nomImport);
+                            parent.getImports().add(anImport);
                             break;
                         }
 

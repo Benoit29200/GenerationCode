@@ -1,5 +1,7 @@
 package modele.metamodeleJava;
 
+import generateur.GenerateurCodeJava;
+
 public abstract class Accesseur {
 
     protected String nom;
@@ -10,4 +12,5 @@ public abstract class Accesseur {
 
     public abstract void setNom(String nom);
     public abstract void setType(String type);
+    public abstract void generateAccesseur(GenerateurCodeJava generateur, StringBuffer code);
 }

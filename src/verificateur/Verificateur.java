@@ -3,7 +3,9 @@ package verificateur;
 import modele.metamodele.Attribut;
 import modele.metamodele.Entite;
 import modele.metamodele.Modele;
+import parametrage.Parametres;
 import parametrage.PrimitiveParam;
+import parametrage.TypeParam;
 
 import java.util.ArrayList;
 
@@ -58,7 +60,9 @@ public class Verificateur {
 
         return true;
     }
-    public boolean typeAttributOK(Modele modele,ArrayList<Attribut> attributs, ArrayList<PrimitiveParam> primitives){
+    public boolean typeAttributOK(Modele modele, ArrayList<Attribut> attributs, Parametres lesParametres){
+
+
 
         boolean attributsOK = true;
 
@@ -66,7 +70,7 @@ public class Verificateur {
 
             boolean typeAttributOK = false;
 
-            for(PrimitiveParam primitive : primitives){
+            for(PrimitiveParam primitive : lesParametres.getPrimitives()){
                 if(a.getType().equals(primitive.getNom())){
                     typeAttributOK = true;
                 }
@@ -75,6 +79,14 @@ public class Verificateur {
             if(!typeAttributOK){
                 for(Entite e : modele.getEntites()){
                     if(e.getNom().equals(a.getType())){
+                        typeAttributOK = true;
+                    }
+                }
+            }
+
+            if(!typeAttributOK){
+                for(TypeParam type: lesParametres.getTypes()){
+                    if(a.getType().equals(type.getNom())){
                         typeAttributOK = true;
                     }
                 }

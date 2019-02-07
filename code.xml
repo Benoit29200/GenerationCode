@@ -8,7 +8,7 @@
         <Entite nom="Chaise" subtypeof="Meuble">
             <Attribut nom="test" type="Integer"/>
             <Attribut nom="matiere" type="String"/>
-            <Attribut nom="listMatiere" type="List"/>
+            <Attribut nom="listMatiere" type="ArrayList"/>
         </Entite>
 
         <Entite nom="Tabouret">

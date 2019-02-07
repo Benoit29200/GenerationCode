@@ -1,16 +1,36 @@
 package parametrage;
 
-public abstract class PrimitiveParam {
+public class PrimitiveParam {
 
-    protected String nom;
-    protected String type;
+    private String nom;
+    private String type;
 
-    public abstract String getNom();
-    public abstract void setNom(String nom);
+    public PrimitiveParam(String nom, String type) {
+        this.nom = nom;
+        this.type = type;
+    }
 
-    public abstract String getType();
-    public abstract void setType(String type);
+    public String getNom() {
+        return nom;
+    }
 
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
 
+    public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "PrimitiveParam{" +
+                "nom='" + nom + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

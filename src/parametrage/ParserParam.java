@@ -4,22 +4,24 @@ import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.util.ArrayList;
 
 public class ParserParam {
     private static ParserParam ourInstance = new ParserParam();
+    Parametres lesParametres;
 
     public static ParserParam getInstance() {
         return ourInstance;
     }
 
     private ParserParam() {
+        lesParametres = new Parametres();
     }
 
-    public ArrayList<PrimitiveParam> parse(String filename){
+    public Parametres parse(String filename){
         try {
             final org.w3c.dom.Element racine = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(filename)).getDocumentElement();
-            return parsePrimitive(racine);
+            parsePrimitive(racine);
+            return this.lesParametres;
 
         } catch (Exception e) {
             System.err.println("Erreur lors du parsage du document "+filename+"\n");
@@ -27,9 +29,8 @@ public class ParserParam {
         }
     }
 
-    private ArrayList<PrimitiveParam> parsePrimitive(org.w3c.dom.Element node){
+    private void parsePrimitive(org.w3c.dom.Element node){
 
-        ArrayList<PrimitiveParam> primitives = new ArrayList<>();
 
         try {
             for (int i = 0; i < node.getChildNodes().getLength(); i++) {
@@ -40,24 +41,23 @@ public class ParserParam {
                         case "primitive":{
                             String name = elem.getAttribute("name");
                             String type = elem.getAttribute("type");
-                            String packageName = elem.getAttribute("package");
-                            if(packageName.equals("")){
-                                PrimitiveSimpleParam primitive = new PrimitiveSimpleParam(name,type);
-                                primitives.add(primitive);
-                            }else{
-                                PrimitiveMultipleParam assoMultiple = new PrimitiveMultipleParam(name,type,packageName);
-                                primitives.add(assoMultiple);
-                            }
-
+                            PrimitiveParam primitive = new PrimitiveParam(name,type);
+                            this.lesParametres.getPrimitives().add(primitive);
+                            break;
+                        }
+                        case "type":{
+                            String name = elem.getAttribute("name");
+                            String type = elem.getAttribute("type");
+                            String monPackage = elem.getAttribute("package");
+                            TypeParam typeParam = new TypeParam(name,type,monPackage);
+                            this.lesParametres.getTypes().add(typeParam);
                             break;
                         }
                     }
                 }
             }
-            return primitives;
         }catch (Exception e) {
-            System.out.println("erreur parse modele :"+e.getMessage());
-            return null;
+            System.err.println("erreur parse modele :"+e.getMessage());
         }
     }
 }

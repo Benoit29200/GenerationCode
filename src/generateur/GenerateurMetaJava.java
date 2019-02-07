@@ -3,8 +3,9 @@ package generateur;
 import modele.metamodele.Attribut;
 import modele.metamodele.Entite;
 import modele.metamodele.Modele;
+import parametrage.Parametres;
 import parametrage.ParserParam;
-import parametrage.PrimitiveParam;
+import parametrage.TypeParam;
 import parser.parserMetamodele.ParserMetamodele;
 import verificateur.Verificateur;
 
@@ -46,7 +47,6 @@ public class GenerateurMetaJava {
         metaModeleJavaXML += "</Code>\n";
 
         this.ecritureFichier(filenameDest);
-        //ParserMetamodeleJava.getInstance().parse(filenameDest,filenameParameter);
 
     }
 
@@ -58,6 +58,8 @@ public class GenerateurMetaJava {
         } else{
             this.metaModeleJavaXML += "\t\t<Class nom=\""+e.getNom()+"\" subtypeof=\""+e.getSubtypeof()+"\">\n";
         }
+
+        generateImport(e, ParserParam.getInstance().parse(this.filenameParameter).getTypes());
 
         // Génération déclaration attributs
         for(Attribut a: e.getAttributs()){
@@ -109,7 +111,7 @@ public class GenerateurMetaJava {
 
     private void verifications(){
 
-        ArrayList<PrimitiveParam> primitives = ParserParam.getInstance().parse(this.filenameParameter);
+        Parametres lesParametres = ParserParam.getInstance().parse(this.filenameParameter);
         Verificateur verificateur = Verificateur.getInstance();
         boolean errors = false;
 
@@ -120,12 +122,29 @@ public class GenerateurMetaJava {
                 errors = true;
             }
 
-                if(!verificateur.typeAttributOK(this.myModele,e.getAttributs(),primitives)){
+                if(!verificateur.typeAttributOK(this.myModele,e.getAttributs(),lesParametres)){
                     errors = true;
                 }
         }
 
         if(errors) System.exit(0);
+    }
+
+    private void generateImport(Entite e, ArrayList<TypeParam> params){
+
+        ArrayList<String> imports = new ArrayList<>();
+
+        for(Attribut a: e.getAttributs()){
+            for(TypeParam type: params){
+                if(a.getType().equals(type.getNom()) && !imports.contains(type.getLePackage())){
+                    imports.add(type.getLePackage());
+                }
+            }
+        }
+
+        for(String importPackage: imports){
+            this.metaModeleJavaXML += "\t\t\t<Import nom=\""+importPackage+"\"/>\n";
+        }
     }
 
 

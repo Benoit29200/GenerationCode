@@ -1,16 +1,15 @@
-package modele.metamodeleJava;
+package parametrage;
 
-import generateur.GenerateurCodeJava;
+public class TypeParam {
 
-public class Setter extends Accesseur{
+    private String nom;
+    private String type;
+    private String lePackage;
 
-
-    public Setter(String nom, String type) {
+    public TypeParam(String nom, String type, String lePackage) {
         this.nom = nom;
         this.type = type;
-    }
-
-    public Setter() {
+        this.lePackage = lePackage;
     }
 
     public String getNom() {
@@ -29,16 +28,20 @@ public class Setter extends Accesseur{
         this.type = type;
     }
 
-    @Override
-    public void generateAccesseur(GenerateurCodeJava generateur, StringBuffer code) {
-        generateur.generateCodeSetter(this,code);
+    public String getLePackage() {
+        return lePackage;
+    }
+
+    public void setLePackage(String lePackage) {
+        this.lePackage = lePackage;
     }
 
     @Override
     public String toString() {
-        return "Setter{" +
+        return "TypeParam{" +
                 "nom='" + nom + '\'' +
                 ", type='" + type + '\'' +
+                ", lePackage='" + lePackage + '\'' +
                 '}';
     }
 }

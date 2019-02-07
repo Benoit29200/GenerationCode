@@ -1,5 +1,7 @@
 package modele.metamodeleJava;
 
+import generateur.GenerateurCodeJava;
+
 public class ConstructorEmpty extends Constructor {
 
     public ConstructorEmpty() {
@@ -17,6 +19,11 @@ public class ConstructorEmpty extends Constructor {
     @Override
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    @Override
+    public void generateCodeConstructor(GenerateurCodeJava generateur, StringBuffer code) {
+        generateur.generateCodeConstructorEmpty(this,code);
     }
 
     @Override
