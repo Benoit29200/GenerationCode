@@ -3,9 +3,9 @@ package verificateur;
 import modele.metamodele.Attribut;
 import modele.metamodele.Entite;
 import modele.metamodele.Modele;
-import parametrage.Parametres;
-import parametrage.PrimitiveParam;
-import parametrage.TypeParam;
+import modele.parametre.Parametres;
+import modele.parametre.PrimitiveParam;
+import modele.parametre.TypeParam;
 
 import java.util.ArrayList;
 

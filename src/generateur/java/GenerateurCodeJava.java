@@ -1,4 +1,4 @@
-package generateur;
+package generateur.java;
 
 import modele.metamodeleJava.Attribut;
 import modele.metamodeleJava.*;

@@ -1,11 +1,11 @@
-package generateur;
+package generateur.java;
 
 import modele.metamodele.Attribut;
 import modele.metamodele.Entite;
 import modele.metamodele.Modele;
-import parametrage.Parametres;
-import parametrage.ParserParam;
-import parametrage.TypeParam;
+import modele.parametre.Parametres;
+import parser.parserParametre.ParserParam;
+import modele.parametre.TypeParam;
 import parser.parserMetamodele.ParserMetamodele;
 import verificateur.Verificateur;
 

@@ -1,6 +1,6 @@
 package modele.metamodeleJava;
 
-import generateur.GenerateurCodeJava;
+import generateur.java.GenerateurCodeJava;
 
 public class ConstructorEmpty extends Constructor {
 

@@ -1,7 +1,7 @@
 package test;
 
-import generateur.GenerateurCodeJava;
-import generateur.GenerateurMetaJava;
+import generateur.java.GenerateurCodeJava;
+import generateur.java.GenerateurMetaJava;
 import modele.metamodele.Modele;
 import parser.parserMetamodele.ParserMetamodele;
 

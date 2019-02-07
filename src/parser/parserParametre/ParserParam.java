@@ -1,5 +1,8 @@
-package parametrage;
+package parser.parserParametre;
 
+import modele.parametre.Parametres;
+import modele.parametre.PrimitiveParam;
+import modele.parametre.TypeParam;
 import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilderFactory;

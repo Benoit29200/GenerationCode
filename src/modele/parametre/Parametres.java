@@ -1,4 +1,4 @@
-package parametrage;
+package modele.parametre;
 
 import java.util.ArrayList;
 

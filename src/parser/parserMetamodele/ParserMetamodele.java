@@ -4,8 +4,6 @@ import modele.metamodele.Attribut;
 import modele.metamodele.Entite;
 import modele.metamodele.Modele;
 import org.w3c.dom.Node;
-import parametrage.Parametres;
-import parametrage.ParserParam;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;

@@ -1,4 +1,4 @@
-package parametrage;
+package modele.parametre;
 
 public class PrimitiveParam {
 

@@ -1,7 +1,7 @@
 package modele.metamodele;
 
 
-import generateur.GenerateurMetaJava;
+import generateur.java.GenerateurMetaJava;
 
 import java.util.ArrayList;
 
