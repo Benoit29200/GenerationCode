@@ -6,17 +6,17 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
 
-public class ParserParametrage {
-    private static ParserParametrage ourInstance = new ParserParametrage();
+public class ParserParam {
+    private static ParserParam ourInstance = new ParserParam();
 
-    public static ParserParametrage getInstance() {
+    public static ParserParam getInstance() {
         return ourInstance;
     }
 
-    private ParserParametrage() {
+    private ParserParam() {
     }
 
-    public ArrayList<PrimitiveParametrage> parse(String filename){
+    public ArrayList<PrimitiveParam> parse(String filename){
         try {
             final org.w3c.dom.Element racine = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(filename)).getDocumentElement();
             return parsePrimitive(racine);
@@ -27,9 +27,9 @@ public class ParserParametrage {
         }
     }
 
-    private ArrayList<PrimitiveParametrage> parsePrimitive(org.w3c.dom.Element node){
+    private ArrayList<PrimitiveParam> parsePrimitive(org.w3c.dom.Element node){
 
-        ArrayList<PrimitiveParametrage> primitives = new ArrayList<>();
+        ArrayList<PrimitiveParam> primitives = new ArrayList<>();
 
         try {
             for (int i = 0; i < node.getChildNodes().getLength(); i++) {
@@ -40,8 +40,15 @@ public class ParserParametrage {
                         case "primitive":{
                             String name = elem.getAttribute("name");
                             String type = elem.getAttribute("type");
-                            PrimitiveParametrage primitive = new PrimitiveParametrage(name,type);
-                            primitives.add(primitive);
+                            String packageName = elem.getAttribute("package");
+                            if(packageName.equals("")){
+                                PrimitiveSimpleParam primitive = new PrimitiveSimpleParam(name,type);
+                                primitives.add(primitive);
+                            }else{
+                                PrimitiveMultipleParam assoMultiple = new PrimitiveMultipleParam(name,type,packageName);
+                                primitives.add(assoMultiple);
+                            }
+
                             break;
                         }
                     }

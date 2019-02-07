@@ -1,13 +1,14 @@
 
 <Code>
-    <Modele nom="monModele">
+    <Modele nom="monPackage">
         <Entite nom="Meuble">
             <Attribut nom="pied" type="Integer"/>
-            <Attribut nom="test1" type="Chaise"/>
+            <Attribut nom="test2" type="Chaise"/>
         </Entite>
         <Entite nom="Chaise" subtypeof="Meuble">
             <Attribut nom="test" type="Integer"/>
             <Attribut nom="matiere" type="String"/>
+            <Attribut nom="listMatiere" type="List"/>
         </Entite>
 
         <Entite nom="Tabouret">

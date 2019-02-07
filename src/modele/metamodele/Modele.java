@@ -1,6 +1,4 @@
-package metamodele;
-
-import generateur.Generateur;
+package modele.metamodele;
 
 import java.util.ArrayList;
 
@@ -25,4 +23,11 @@ public class Modele {
         return entites;
     }
 
+    @Override
+    public String toString() {
+        return "Modele{" +
+                "nom='" + nom + '\'' +
+                ", entites=" + entites +
+                '}';
+    }
 }

@@ -5,4 +5,5 @@
     <primitive name="Double" type="Double"/>
     <primitive name="Boolean" type="Boolean"/>
     <primitive name="boolean" type="boolean"/>
+    <primitive name="List" type="ArrayList" package="Java.util.ArrayList"/>
 </Parametrage>
