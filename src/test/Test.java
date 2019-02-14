@@ -9,8 +9,6 @@ public class Test {
 
     public static void main(String[] args) {
 
-        Modele p = ParserMetamodele.getInstance().parse("code.xml","parametrage.xml");
-
         GenerateurMetaJava generateurMetaJava = GenerateurMetaJava.getInstance();
         generateurMetaJava.init("code.xml", "parametrage.xml");
         generateurMetaJava.generate("metaModeleForJava.xml");
@@ -19,6 +17,5 @@ public class Test {
         generateurCodeJava.init("metaModeleForJava.xml", "parametrage.xml");
         generateurCodeJava.generate();
 
-        //Generateur.getInstance().generate("code.xml","parametrage.xml","src");
     }
 }

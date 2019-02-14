@@ -8,14 +8,16 @@ import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class ParserMetamodeleJava {
 
     private static ParserMetamodeleJava instance;
-    private Package myPackage;
+    private ArrayList<Package> mesPackages;
 
     private ParserMetamodeleJava() {
-        myPackage = new Package();
+        mesPackages = new ArrayList<>();
     }
 
     public static ParserMetamodeleJava getInstance() {
@@ -24,12 +26,12 @@ public class ParserMetamodeleJava {
     }
 
 
-    public Package parse(String filename, String parametrageFilename) {
+    public ArrayList<Package> parse(String filename, String parametrageFilename) {
 
         try {
             final org.w3c.dom.Element racine = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(filename)).getDocumentElement();
             parseCode(racine, parametrageFilename);
-            return this.myPackage;
+            return this.mesPackages;
 
         } catch (Exception e) {
             System.err.println("Erreur lors du parsage du document xml");
@@ -48,8 +50,9 @@ public class ParserMetamodeleJava {
                     switch (elem.getNodeName()) {
                         case "Package": {
                             String nomPackage = elem.getAttribute("nom");
-                            this.myPackage = new Package(nomPackage);
-                            parsePackage(elem, this.myPackage, parametrageFilename);
+                            Package g = new Package(nomPackage);
+                            this.mesPackages.add(g);
+                            parsePackage(elem, g, parametrageFilename);
                             break;
                         }
                     }
@@ -94,8 +97,9 @@ public class ParserMetamodeleJava {
                     switch (elem.getNodeName()) {
                         case "Attribut": {
                             String nomAttribut = elem.getAttribute("nom");
+                            String maValeur = elem.getAttribute("value");
                             String typeAttribut = elem.getAttribute("type");
-                            Attribut attribut = new Attribut(nomAttribut, typeAttribut);
+                            Attribut attribut = new Attribut(nomAttribut, typeAttribut, maValeur);
                             parent.getAttributs().add(attribut);
                             break;
                         }

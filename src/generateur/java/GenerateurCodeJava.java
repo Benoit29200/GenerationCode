@@ -7,6 +7,7 @@ import modele.metamodeleJava.Package;
 import parser.parserMetamodeleJava.ParserMetamodeleJava;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 
 public class GenerateurCodeJava {
     private static GenerateurCodeJava ourInstance = new GenerateurCodeJava();
@@ -15,36 +16,42 @@ public class GenerateurCodeJava {
         return ourInstance;
     }
 
-    private Package monPackage;
+    private ArrayList<Package> mesPackages;
     String filenameParameter;
 
     private GenerateurCodeJava() {
     }
 
     public void init(String filenameMetaJava, String filenameParameter){
-        this.monPackage = ParserMetamodeleJava.getInstance().parse(filenameMetaJava, filenameParameter);
+        this.mesPackages = ParserMetamodeleJava.getInstance().parse(filenameMetaJava, filenameParameter);
         this.filenameParameter = filenameParameter;
 
-        // création du répertoire du package
-        File directory = new File("src/"+this.monPackage.getNom());
+        for(Package monPackage: mesPackages){
+            // création du répertoire du package
+            File directory = new File("src/"+monPackage.getNom());
 
-        //création du répertoire du package
-        boolean isCreated = directory.mkdirs();
+            //création du répertoire du package
+            boolean isCreated = directory.mkdirs();
 
-        // si le répertoire n'est pas créé on quitte le programme
-        if(!isCreated){
-            System.err.println("Erreur à la création du répertoire du package "+this.monPackage.getNom()+".");
-            System.exit(0);
+            // si le répertoire n'est pas créé on quitte le programme
+            if(!isCreated){
+                System.err.println("Erreur à la création du répertoire du package "+monPackage.getNom()+".");
+                System.exit(0);
+            }
         }
+
+
     }
     // on génère chaque class du modèle
     public void generate(){
-        for(Class c: monPackage.getClasses()){
-            this.generateCodeClass(c);
+        for(Package monPackage: mesPackages){
+            for(Class c: monPackage.getClasses()){
+                this.generateCodeClass(c, monPackage);
+            }
         }
     }
 
-    private void generateCodeClass(Class c){
+    private void generateCodeClass(Class c, Package monPackage){
         StringBuffer code = new StringBuffer("");
         /**
          * 1- Package
@@ -58,7 +65,7 @@ public class GenerateurCodeJava {
          */
 
         // -- 1 --
-        code.append("package " + this.monPackage.getNom() + ";\n\n");
+        code.append("package " + monPackage.getNom() + ";\n\n");
 
         // -- 2 --
         for(Import anImport: c.getImports()){
@@ -90,7 +97,7 @@ public class GenerateurCodeJava {
         code.append("\n}");
 
         // -- 7 --
-        this.ecritureFichier(c, code);
+        this.ecritureFichier(c, code, monPackage);
     }
 
     private void generateCodeImport(Import anImport, StringBuffer code){
@@ -98,7 +105,13 @@ public class GenerateurCodeJava {
     }
 
     private void generateCodeAttribut(Attribut a, StringBuffer code){
-        code.append("private "+a.getType() + " " + a.getNom() + ";\n");
+        if(a.getValue().equals("")){
+            code.append("private "+a.getType() + " " + a.getNom() + ";\n");
+        }
+        else{
+            code.append("private "+a.getType() + " " + a.getNom() + " = "+a.getValue()+";\n");
+        }
+
     }
 
     private void generateCodeConstructor(Constructor c, StringBuffer code){
@@ -145,10 +158,10 @@ public class GenerateurCodeJava {
         code.append("}\n");
     }
 
-    private void ecritureFichier(Class c, StringBuffer code){
+    private void ecritureFichier(Class c, StringBuffer code, Package monPackage){
 
         try{
-            FileWriter fichier = new FileWriter("src/"+this.monPackage.getNom()+"/"+c.getNom()+".java");
+            FileWriter fichier = new FileWriter("src/"+monPackage.getNom()+"/"+c.getNom()+".java");
             fichier.write (code.toString());
             fichier.close();
         }catch(Exception e){

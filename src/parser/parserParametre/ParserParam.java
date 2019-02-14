@@ -48,7 +48,7 @@ public class ParserParam {
                             this.lesParametres.getPrimitives().add(primitive);
                             break;
                         }
-                        case "type":{
+                        case "collection":{
                             String name = elem.getAttribute("name");
                             String type = elem.getAttribute("type");
                             String monPackage = elem.getAttribute("package");

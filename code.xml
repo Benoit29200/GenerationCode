@@ -2,13 +2,13 @@
 <Code>
     <Modele nom="monPackage">
         <Entite nom="Meuble">
-            <Attribut nom="pied" type="Integer"/>
+            <Attribut nom="pied" type="Integer" value="7"/>
             <Attribut nom="test2" type="Chaise"/>
         </Entite>
         <Entite nom="Chaise" subtypeof="Meuble">
             <Attribut nom="test" type="Integer"/>
-            <Attribut nom="matiere" type="String"/>
-            <Attribut nom="listMatiere" type="ArrayList"/>
+            <Attribut nom="matiere" type="String" value='"ceci est un test"'/>
+            <Attribut nom="listMatiere" type="Set"/>
         </Entite>
 
         <Entite nom="Tabouret">
@@ -16,4 +16,17 @@
             <Attribut nom="matiere" type="String"/>
         </Entite>
     </Modele>
+
+    <Modele nom="deuxiemePackage">
+        <Entite nom="Telephone">
+            <Attribut nom="diagonale" type="Integer"/>
+            <Attribut nom="couleur" type="Integer"/>
+        </Entite>
+        <Entite nom="Smartphone" subtypeof="Telephone">
+            <Attribut nom="os" type="Chaise"/>
+            <Attribut nom="ram" type="Integer"/>
+            <Attribut nom="stockage" type="Integer"/>
+        </Entite>
+    </Modele>
+
 </Code>

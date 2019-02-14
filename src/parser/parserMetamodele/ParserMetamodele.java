@@ -7,14 +7,16 @@ import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class ParserMetamodele {
 
     private static ParserMetamodele instance;
-    private Modele myModele;
+    private ArrayList<Modele> mesModeles;
 
     private ParserMetamodele() {
-        myModele = new Modele();
+        mesModeles = new ArrayList<>();
     }
 
     public static ParserMetamodele getInstance() {
@@ -23,12 +25,12 @@ public class ParserMetamodele {
     }
 
 
-    public Modele parse(String filename, String parametrageFilename) {
+    public ArrayList<Modele> parse(String filename, String parametrageFilename) {
 
         try {
             final org.w3c.dom.Element racine = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(filename)).getDocumentElement();
             parsePackage(racine, parametrageFilename);
-            return this.myModele;
+            return this.mesModeles;
 
         } catch (Exception e) {
             System.err.println("Erreur lors du parsage du document xml");
@@ -47,8 +49,9 @@ public class ParserMetamodele {
                     switch (elem.getNodeName()) {
                         case "Modele": {
                             String nomPackage = elem.getAttribute("nom");
-                            this.myModele = new Modele(nomPackage);
-                            parseEntite(elem, this.myModele, parametrageFilename);
+                            Modele m = new Modele(nomPackage);
+                            this.mesModeles.add(m);
+                            parseEntite(elem, m, parametrageFilename);
                             break;
                         }
                     }
@@ -70,7 +73,7 @@ public class ParserMetamodele {
                         case "Entite": {
                             String subtypeof = elem.getAttribute("subtypeof");
                             String nomEntite = elem.getAttribute("nom");
-                            Entite monEntite = new Entite(nomEntite, subtypeof);
+                            Entite monEntite = new Entite(nomEntite, subtypeof, parent);
                             parent.getEntites().add(monEntite);
                             parseAttribut(elem, monEntite, parametrageFilename);
 
@@ -95,7 +98,8 @@ public class ParserMetamodele {
                         case "Attribut": {
                             String nomAttribut = elem.getAttribute("nom");
                             String typeAttribut = elem.getAttribute("type");
-                            Attribut p = new Attribut(nomAttribut,typeAttribut);
+                            String value = elem.getAttribute("value");
+                            Attribut p = new Attribut(nomAttribut,typeAttribut, value, parent);
                             parent.addAttribut(p);
 
                             break;

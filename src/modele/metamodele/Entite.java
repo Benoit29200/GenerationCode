@@ -10,17 +10,20 @@ public class Entite {
     private String nom;
     private ArrayList<Attribut> attributs;
     private String subtypeof;
+    private Modele parent;
 
-    public Entite(String nom, ArrayList<Attribut> attributs, String subtypeof) {
+    public Entite(String nom, ArrayList<Attribut> attributs, String subtypeof, Modele parent) {
         this.nom = nom;
         this.attributs = attributs;
         this.subtypeof = subtypeof;
+        this.parent=parent;
     }
 
-    public Entite(String nom, String subtypeof) {
+    public Entite(String nom, String subtypeof, Modele parent) {
         this.nom = nom;
         this.subtypeof = subtypeof;
         this.attributs = new ArrayList<>();
+        this.parent = parent;
     }
 
     public Entite() {
@@ -54,12 +57,21 @@ public class Entite {
         this.subtypeof = subtypeof;
     }
 
+    public Modele getParent() {
+        return parent;
+    }
+
+    public void setParent(Modele parent) {
+        this.parent = parent;
+    }
+
     @Override
     public String toString() {
         return "Entite{" +
                 "nom='" + nom + '\'' +
-                ", attributs=" + attributs.toString() +
+                ", attributs=" + attributs +
                 ", subtypeof='" + subtypeof + '\'' +
+                ", parent=" + parent +
                 '}';
     }
 

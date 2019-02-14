@@ -4,10 +4,12 @@ public class Attribut {
 
     private String nom;
     private String type;
+    private String value;
 
-    public Attribut(String nom, String type) {
+    public Attribut(String nom, String type, String value) {
         this.nom = nom;
         this.type = type;
+        this.value = value;
     }
 
     public Attribut() {
@@ -29,11 +31,20 @@ public class Attribut {
         this.type = type;
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     @Override
     public String toString() {
         return "Attribut{" +
                 "nom='" + nom + '\'' +
                 ", type='" + type + '\'' +
+                ", value='" + value + '\'' +
                 '}';
     }
 }

@@ -5,6 +5,8 @@
     <primitive name="Double" type="Double"/>
     <primitive name="Boolean" type="Boolean"/>
     <primitive name="boolean" type="boolean"/>
-    <type name="List" type="ArrayList" package="java.util.List"/>
-    <type name="ArrayList" type="ArrayList" package="java.util.ArrayList"/>
+
+    <collection name="List" type="ArrayList" package="java.util.List"/>
+    <collection name="ArrayList" type="ArrayList" package="java.util.ArrayList"/>
+    <collection name="Set" type="Set" package="java.util.Set"/>
 </Parametrage>
