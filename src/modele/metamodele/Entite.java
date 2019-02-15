@@ -8,13 +8,13 @@ import java.util.ArrayList;
 public class Entite {
 
     private String nom;
-    private ArrayList<Attribut> attributs;
+    private ArrayList<Association> associations;
     private String subtypeof;
     private Modele parent;
 
-    public Entite(String nom, ArrayList<Attribut> attributs, String subtypeof, Modele parent) {
+    public Entite(String nom, ArrayList<Association> associations, String subtypeof, Modele parent) {
         this.nom = nom;
-        this.attributs = attributs;
+        this.associations = associations;
         this.subtypeof = subtypeof;
         this.parent=parent;
     }
@@ -22,7 +22,7 @@ public class Entite {
     public Entite(String nom, String subtypeof, Modele parent) {
         this.nom = nom;
         this.subtypeof = subtypeof;
-        this.attributs = new ArrayList<>();
+        this.associations = new ArrayList<>();
         this.parent = parent;
     }
 
@@ -37,16 +37,16 @@ public class Entite {
         this.nom = nom;
     }
 
-    public ArrayList<Attribut> getAttributs() {
-        return attributs;
+    public ArrayList<Association> getAssociations() {
+        return associations;
     }
 
-    public void setAttributs(ArrayList<Attribut> attributs) {
-        this.attributs = attributs;
+    public void setAssociations(ArrayList<Association> assoSimples) {
+        this.associations = assoSimples;
     }
 
-    public void addAttribut(Attribut att){
-        this.attributs.add(att);
+    public void addAssociation(Association ass){
+        this.associations.add(ass);
     }
 
     public String getSubtypeof() {
@@ -69,7 +69,7 @@ public class Entite {
     public String toString() {
         return "Entite{" +
                 "nom='" + nom + '\'' +
-                ", attributs=" + attributs +
+                ", associations=" + associations +
                 ", subtypeof='" + subtypeof + '\'' +
                 ", parent=" + parent +
                 '}';

@@ -1,8 +1,6 @@
 package parser.parserMetamodele;
 
-import modele.metamodele.Attribut;
-import modele.metamodele.Entite;
-import modele.metamodele.Modele;
+import modele.metamodele.*;
 import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -85,12 +83,35 @@ public class ParserMetamodele {
                 if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
                     final org.w3c.dom.Element elem = (org.w3c.dom.Element) node.getChildNodes().item(i);
 
-                    if (elem.getNodeName().equals("Attribut")) {
+                    switch (elem.getNodeName()) {
+                        case "AttributSimple" : {
                             String nomAttribut = elem.getAttribute("nom");
                             String typeAttribut = elem.getAttribute("type");
                             String value = elem.getAttribute("value");
-                            Attribut p = new Attribut(nomAttribut,typeAttribut, value, parent);
-                            parent.addAttribut(p);
+                            AssoSimple p = new AssoSimple(nomAttribut, typeAttribut, value, parent);
+                            parent.addAssociation(p);
+                            break;
+                        }
+                        case "Collection": {
+                            String nomCollection = elem.getAttribute("nom");
+                            String typeCollection = elem.getAttribute("type");
+                            String soustypeCollection = elem.getAttribute("soustype");
+                            int cardMin = Integer.parseInt(elem.getAttribute("cardMin"));
+                            int cardMax = Integer.parseInt(elem.getAttribute("cardMax"));
+                            AssoMultiple collection = new Collection(nomCollection,typeCollection, soustypeCollection, parent, cardMin,cardMax);
+                            parent.addAssociation(collection);
+                            break;
+                        }
+
+                        case "Array": {
+                            int cardMin = Integer.parseInt(elem.getAttribute("cardMin"));
+                            int cardMax = Integer.parseInt(elem.getAttribute("cardMax"));
+                            String nomArray = elem.getAttribute("nom");
+                            String typeArray = elem.getAttribute("type");
+                            Array array = new Array(nomArray,typeArray, parent, cardMin,cardMax);
+                            parent.addAssociation(array);
+                            break;
+                        }
                     }
                 }
             }

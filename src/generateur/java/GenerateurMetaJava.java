@@ -1,8 +1,6 @@
 package generateur.java;
 
-import modele.metamodele.Attribut;
-import modele.metamodele.Entite;
-import modele.metamodele.Modele;
+import modele.metamodele.*;
 import modele.parametre.Parametres;
 import parser.parserParametre.ParserParam;
 import modele.parametre.TypeParam;
@@ -21,13 +19,13 @@ public class GenerateurMetaJava {
 
     private ArrayList<Modele> mesModeles;
     private StringBuffer metaModeleJavaXML = new StringBuffer();
-    private String filenameParameter;
+    private Parametres parametres;
 
     private GenerateurMetaJava() { }
 
     public void init(String filenameCode, String filenameParameter){
         mesModeles = ParserMetamodele.getInstance().parse(filenameCode);
-        this.filenameParameter = filenameParameter;
+        this.parametres = ParserParam.getInstance().parse(filenameParameter);
     }
 
     public void generate(String filenameDest){
@@ -56,23 +54,23 @@ public class GenerateurMetaJava {
             this.metaModeleJavaXML.append("\t\t<Class nom=\""+e.getNom()+"\" subtypeof=\""+e.getSubtypeof()+"\">\n");
         }
 
-        generateImport(e, ParserParam.getInstance().parse(this.filenameParameter).getTypes());
+        generateImport(e, this.parametres.getTypes());
 
         // Génération déclaration attributs
-        for(Attribut a: e.getAttributs()){
-            a.visitForDeclaration(this);
+        for(Association ass: e.getAssociations()){
+            ass.visitForDeclaration(this);
         }
         // Génération constructeurs
         this.metaModeleJavaXML.append("\t\t\t<ConstructorEmpty name=\""+e.getNom()+"\"/>\n");
         this.metaModeleJavaXML.append("\t\t\t<ConstructorParams name=\""+e.getNom()+"\">\n");
-        for(Attribut a: e.getAttributs()){
+        for(Association a: e.getAssociations()){
             a.visitForParamConstructor(this);
         }
         this.metaModeleJavaXML.append("\t\t\t</ConstructorParams>\n");
 
 
         // Génération getter et setter
-        for(Attribut a: e.getAttributs()){
+        for(Association a: e.getAssociations()){
             a.visitForGetterSetter(this);
         }
 
@@ -80,24 +78,50 @@ public class GenerateurMetaJava {
     }
 
 
-    public void generateDeclarationAttribut(Attribut a){
-        if(a.getValue().equals("")){
-            this.metaModeleJavaXML.append("\t\t\t<Attribut nom=\""+a.getNom()+"\" type=\""+a.getType()+"\"/>\n");
+    public void generateDeclarationAttribut(AssoSimple ass){
+        if(ass.getValue().equals("")){
+            this.metaModeleJavaXML.append("\t\t\t<AssoSimple nom=\""+ass.getNom()+"\" type=\""+ass.getType()+"\"/>\n");
         }
         else{
-            this.metaModeleJavaXML.append("\t\t\t<Attribut nom=\""+a.getNom()+"\" type=\""+a.getType()+"\" value=\'"+a.getValue()+"\'/>\n");
+            this.metaModeleJavaXML.append("\t\t\t<AssoSimple nom=\""+ass.getNom()+"\" type=\""+ass.getType()+"\" value=\'"+ass.getValue()+"\'/>\n");
         }
-
-
     }
 
-    public void generateGetterSetterAttribut(Attribut a){
-        this.metaModeleJavaXML.append("\t\t\t<Getter nom=\""+a.getNom()+"\" type=\""+a.getType()+"\"/>\n");
-        this.metaModeleJavaXML.append("\t\t\t<Setter nom=\""+a.getNom()+"\" type=\""+a.getType()+"\"/>\n");
+    public void generateDeclarationCollection(Collection col){
+        //TODO fait mais à tester
+        this.metaModeleJavaXML.append("\t\t\t<Collection nom=\""+col.getNom()+"\" type=\""+this.getTypeJavaFromMinispec(col.getType())+"\" soustype=\""+col.getSoustype()+"\" cardMin=\""+col.getCardMin()+"\" cardMax=\""+col.getCardMax()+"\"/>\n");
     }
 
-    public void generateParamForConstructor(Attribut a){
-        this.metaModeleJavaXML.append("\t\t\t\t<Param nom=\""+a.getNom()+"\" type=\""+a.getType()+"\"/>\n");
+    public void generateDeclarationArray(Array ass){
+        //TODO fait mais à tester
+        this.metaModeleJavaXML.append("\t\t\t<Array nom=\""+ass.getNom()+"\" type=\""+ass.getType()+"\" cardMin=\""+ass.getCardMin()+"\" cardMax=\""+ass.getCardMax()+"\"/>\n");
+    }
+
+    public void generateGetterSetterAttribut(AssoSimple ass){
+        this.metaModeleJavaXML.append("\t\t\t<GetterAttribut nom=\""+ass.getNom()+"\" type=\""+ass.getType()+"\"/>\n");
+        this.metaModeleJavaXML.append("\t\t\t<SetterAttribut nom=\""+ass.getNom()+"\" type=\""+ass.getType()+"\"/>\n");
+    }
+
+    public void generateGetterSetterArray(Array array){
+        this.metaModeleJavaXML.append("\t\t\t<GetterArray nom=\""+array.getNom()+"\" type=\""+array.getType()+"\"/>\n");
+        this.metaModeleJavaXML.append("\t\t\t<SetterArray nom=\""+array.getNom()+"\" type=\""+array.getType()+"\"/>\n");
+    }
+
+    public void generateGetterSetterCollection(Collection col){
+        this.metaModeleJavaXML.append("\t\t\t<GetterCollection nom=\""+col.getNom()+"\" type=\""+this.getTypeJavaFromMinispec(col.getType())+"\" soustype=\""+ col.getSoustype() +"\"/>\n");
+        this.metaModeleJavaXML.append("\t\t\t<SetterGetterCollection nom=\""+col.getNom()+"\" type=\""+this.getTypeJavaFromMinispec(col.getType())+"\" soustype=\""+ col.getSoustype() +"\"/>\n");
+    }
+
+    public void generateParamAttributForConstructor(AssoSimple ass){
+        this.metaModeleJavaXML.append("\t\t\t\t<ParamAttribut nom=\""+ass.getNom()+"\" type=\""+ass.getType()+"\"/>\n");
+    }
+
+    public void generateParamArrayForConstructor(Array array){
+        this.metaModeleJavaXML.append("\t\t\t\t<ParamArray nom=\""+array.getNom()+"\" type=\""+array.getType()+"\"/>\n");
+    }
+
+    public void generateParamCollectionForConstructor(Collection col){
+        this.metaModeleJavaXML.append("\t\t\t\t<ParamCollection nom=\""+col.getNom()+"\" type=\""+this.getTypeJavaFromMinispec(col.getType())+"\" soustype=\""+col.getSoustype()+"\"/>\n");
     }
 
     private void ecritureFichier(String filenameDest){
@@ -113,7 +137,6 @@ public class GenerateurMetaJava {
 
     private void verifications(ArrayList<Modele> modeles){
 
-        Parametres lesParametres = ParserParam.getInstance().parse(this.filenameParameter);
         Verificateur verificateur = Verificateur.getInstance();
         boolean errors = false;
 
@@ -125,7 +148,7 @@ public class GenerateurMetaJava {
                     errors = true;
                 }
 
-                if(!verificateur.typeAttributOK(modeles,e.getAttributs(),lesParametres)){
+                if(!verificateur.typeAttributOK(modeles,e.getAssociations(),this.parametres)){
                     errors = true;
                 }
             }
@@ -139,16 +162,16 @@ public class GenerateurMetaJava {
         ArrayList<String> imports = new ArrayList<>();
 
         // si le type de l'attribut est un type collection du fichier de paramètrage, on l'ajoute dans les imports
-        for(Attribut a: e.getAttributs()){
+        for(Association a: e.getAssociations()){
             for(TypeParam type: params){
-                if(a.getType().equals(type.getNom()) && !imports.contains(type.getLePackage())){
+                if(a.getType().equals(type.getNom()) && !imports.contains(type.getLePackage()) && !type.getLePackage().isEmpty()){
                     imports.add(type.getLePackage());
                 }
             }
         }
 
         // si le type de l'attribut est une classe définie dans l'un de nos package, alors on ajoute cette classe en import
-        for(Attribut a: e.getAttributs()){
+        for(Association a: e.getAssociations()){
             for(Modele monPackage: this.mesModeles){
                 for(Entite entite: monPackage.getEntites()){
                     if(a.getType().equals(entite.getNom())){
@@ -164,5 +187,14 @@ public class GenerateurMetaJava {
         for(String importPackage: imports){
             this.metaModeleJavaXML.append("\t\t\t<Import nom=\""+importPackage+"\"/>\n");
         }
+    }
+
+    private String getTypeJavaFromMinispec(String type){
+        for(TypeParam collection: this.parametres.getTypes()){
+            if(collection.getNom().equals(type)){
+                return collection.getType();
+            }
+        }
+        return type;
     }
 }

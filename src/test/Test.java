@@ -1,9 +1,7 @@
 package test;
 
-import generateur.java.GenerateurCodeJava;
+//import generateur.java.GenerateurCodeJava;
 import generateur.java.GenerateurMetaJava;
-import modele.metamodele.Modele;
-import parser.parserMetamodele.ParserMetamodele;
 
 public class Test {
 
@@ -13,9 +11,9 @@ public class Test {
         generateurMetaJava.init("code.xml", "parametrage.xml");
         generateurMetaJava.generate("metaModeleForJava.xml");
 
-        GenerateurCodeJava generateurCodeJava = GenerateurCodeJava.getInstance();
-        generateurCodeJava.init("metaModeleForJava.xml", "parametrage.xml");
-        generateurCodeJava.generate();
+//        GenerateurCodeJava generateurCodeJava = GenerateurCodeJava.getInstance();
+//        generateurCodeJava.init("metaModeleForJavaV1.xml", "parametrage.xml");
+//        generateurCodeJava.generate();
 
     }
 }

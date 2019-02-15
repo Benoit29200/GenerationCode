@@ -41,7 +41,7 @@ public class Attribut {
 
     @Override
     public String toString() {
-        return "Attribut{" +
+        return "AssoSimple{" +
                 "nom='" + nom + '\'' +
                 ", type='" + type + '\'' +
                 ", value='" + value + '\'' +

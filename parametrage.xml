@@ -6,7 +6,6 @@
     <primitive name="Boolean" type="Boolean"/>
     <primitive name="boolean" type="boolean"/>
 
-    <collection name="List" type="ArrayList" package="java.util.List"/>
-    <collection name="ArrayList" type="ArrayList" package="java.util.ArrayList"/>
-    <collection name="Set" type="Set" package="java.util.Set"/>
+    <collection name="List" type="ArrayList" package="java.util.ArrayList"/>
+    <collection name="Set" type="HashSet" package="java.util.HashSet"/>
 </Parametrage>

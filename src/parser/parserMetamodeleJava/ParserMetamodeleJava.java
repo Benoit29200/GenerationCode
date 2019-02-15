@@ -87,7 +87,7 @@ public class ParserMetamodeleJava {
                     final org.w3c.dom.Element elem = (org.w3c.dom.Element) node.getChildNodes().item(i);
 
                     switch (elem.getNodeName()) {
-                        case "Attribut": {
+                        case "AssoSimple": {
                             String nomAttribut = elem.getAttribute("nom");
                             String maValeur = elem.getAttribute("value");
                             String typeAttribut = elem.getAttribute("type");

@@ -1,31 +1,31 @@
-
 <Code>
     <Modele nom="monPackage">
         <Entite nom="Meuble">
-            <Attribut nom="pied" type="Integer" value="7"/>
-            <Attribut nom="test2" type="Chaise"/>
+            <AttributSimple nom="pied" type="Integer" value="7"/>
+            <AttributSimple nom="test2" type="Chaise"/>
         </Entite>
         <Entite nom="Chaise" subtypeof="Meuble">
-            <Attribut nom="test" type="Integer"/>
-            <Attribut nom="matiere" type="String" value='"ceci est un test"'/>
-            <Attribut nom="listMatiere" type="Set"/>
+            <AttributSimple nom="test" type="Integer"/>
+            <AttributSimple nom="matiere" type="String" value='"ceci est un test"'/>
+            <Collection nom="listMatiere" type="Set" soustype="Telephone" cardMin="0" cardMax="10"/>
+            <Array nom="tab" type="Telephone" cardMin="0" cardMax="10"/>
         </Entite>
 
         <Entite nom="Tabouret">
-            <Attribut nom="dossier" type="String"/>
-            <Attribut nom="matiere" type="String"/>
+            <AttributSimple nom="dossier" type="String"/>
+            <AttributSimple nom="matiere" type="String"/>
         </Entite>
     </Modele>
 
     <Modele nom="deuxiemePackage">
         <Entite nom="Telephone">
-            <Attribut nom="diagonale" type="Integer"/>
-            <Attribut nom="couleur" type="Integer"/>
+            <AttributSimple nom="diagonale" type="Integer"/>
+            <AttributSimple nom="couleur" type="Integer"/>
         </Entite>
         <Entite nom="Smartphone" subtypeof="Telephone">
-            <Attribut nom="os" type="Chaise"/>
-            <Attribut nom="ram" type="Integer"/>
-            <Attribut nom="stockage" type="Integer"/>
+            <AttributSimple nom="os" type="Chaise"/>
+            <AttributSimple nom="ram" type="Integer"/>
+            <AttributSimple nom="stockage" type="Integer"/>
         </Entite>
     </Modele>
 

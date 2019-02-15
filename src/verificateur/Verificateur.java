@@ -1,6 +1,7 @@
 package verificateur;
 
-import modele.metamodele.Attribut;
+import modele.metamodele.AssoSimple;
+import modele.metamodele.Association;
 import modele.metamodele.Entite;
 import modele.metamodele.Modele;
 import modele.parametre.Parametres;
@@ -48,8 +49,8 @@ public class Verificateur {
         }
 
         // on vérifie qu'un attribut de la classe fille n'est pas également présent dans la classe mère
-        for(Attribut aMother: mother.getAttributs()){
-            for(Attribut aDaughter : e.getAttributs()){
+        for(Association aMother: mother.getAssociations()){
+            for(Association aDaughter : e.getAssociations()){
                 if(aMother.getNom().equals(aDaughter.getNom())){
                     System.err.println("L'attribut \""+aMother.getNom()+"\" est présent dans la classe mère \""+mother.getNom()+"\" et sa classe fille \""+e.getNom()+"\"\n");
                     attributInMotherAndDaughter = true;
@@ -58,11 +59,11 @@ public class Verificateur {
         }
         return !attributInMotherAndDaughter;
     }
-    public boolean typeAttributOK(ArrayList<Modele> modeles, ArrayList<Attribut> attributs, Parametres lesParametres){
+    public boolean typeAttributOK(ArrayList<Modele> modeles, ArrayList<Association> associations, Parametres lesParametres){
 
         boolean attributsOK = true;
 
-        for(Attribut a: attributs){
+        for(Association a: associations){
 
             boolean typeAttributOK = false;
 
