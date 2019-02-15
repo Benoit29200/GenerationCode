@@ -6,7 +6,6 @@ import modele.metamodele.Modele;
 import modele.parametre.Parametres;
 import modele.parametre.PrimitiveParam;
 import modele.parametre.TypeParam;
-
 import java.util.ArrayList;
 
 public class Verificateur {
@@ -57,13 +56,7 @@ public class Verificateur {
                 }
             }
         }
-
-        if(attributInMotherAndDaughter){
-            return false;
-        }
-
-
-        return true;
+        return !attributInMotherAndDaughter;
     }
     public boolean typeAttributOK(ArrayList<Modele> modeles, ArrayList<Attribut> attributs, Parametres lesParametres){
 

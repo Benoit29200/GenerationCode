@@ -8,7 +8,6 @@ import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ParserMetamodeleJava {
@@ -26,11 +25,11 @@ public class ParserMetamodeleJava {
     }
 
 
-    public ArrayList<Package> parse(String filename, String parametrageFilename) {
+    public ArrayList<Package> parse(String filename) {
 
         try {
             final org.w3c.dom.Element racine = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(filename)).getDocumentElement();
-            parseCode(racine, parametrageFilename);
+            parseCode(racine);
             return this.mesPackages;
 
         } catch (Exception e) {
@@ -40,21 +39,18 @@ public class ParserMetamodeleJava {
     }
 
 
-    private void parseCode(org.w3c.dom.Element node, String parametrageFilename) {
+    private void parseCode(org.w3c.dom.Element node) {
         try {
 
             for (int i = 0; i < node.getChildNodes().getLength(); i++) {
                 if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
                     final org.w3c.dom.Element elem = (org.w3c.dom.Element) node.getChildNodes().item(i);
 
-                    switch (elem.getNodeName()) {
-                        case "Package": {
+                    if (elem.getNodeName().equals("Package")) {
                             String nomPackage = elem.getAttribute("nom");
                             Package g = new Package(nomPackage);
                             this.mesPackages.add(g);
-                            parsePackage(elem, g, parametrageFilename);
-                            break;
-                        }
+                            parsePackage(elem, g);
                     }
                 }
             }
@@ -63,22 +59,18 @@ public class ParserMetamodeleJava {
         }
     }
 
-    private void parsePackage(org.w3c.dom.Element node, Package parent, String parametrageFilename) {
+    private void parsePackage(org.w3c.dom.Element node, Package parent) {
         try {
-
             for (int i = 0; i < node.getChildNodes().getLength(); i++) {
                 if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
                     final org.w3c.dom.Element elem = (org.w3c.dom.Element) node.getChildNodes().item(i);
 
-                    switch (elem.getNodeName()) {
-                        case "Class": {
+                    if (elem.getNodeName().equals("Class")) {
                             String nomClass = elem.getAttribute("nom");
                             String subtypeof = elem.getAttribute("subtypeof");
                             Class classe = new Class(nomClass, subtypeof);
                             parent.getClasses().add(classe);
-                            parseClass(elem,classe, parametrageFilename);
-                            break;
-                        }
+                            parseClass(elem,classe);
                     }
                 }
             }
@@ -87,7 +79,7 @@ public class ParserMetamodeleJava {
         }
     }
 
-    private void parseClass(org.w3c.dom.Element node, Class parent, String parametrageFilename) {
+    private void parseClass(org.w3c.dom.Element node, Class parent) {
         try {
 
             for (int i = 0; i < node.getChildNodes().getLength(); i++) {
@@ -122,7 +114,7 @@ public class ParserMetamodeleJava {
                             String nom = elem.getAttribute("name");
                             ConstructorParams constructor = new ConstructorParams(nom);
                             parent.getConstructors().add(constructor);
-                            parseConstructorParams(elem,constructor, parametrageFilename);
+                            parseConstructorParams(elem,constructor);
                             break;
                         }
 
@@ -148,21 +140,17 @@ public class ParserMetamodeleJava {
         }
     }
 
-    private void parseConstructorParams(org.w3c.dom.Element node, ConstructorParams parent, String parametrageFilename) {
+    private void parseConstructorParams(org.w3c.dom.Element node, ConstructorParams parent) {
         try {
-
             for (int i = 0; i < node.getChildNodes().getLength(); i++) {
                 if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
                     final org.w3c.dom.Element elem = (org.w3c.dom.Element) node.getChildNodes().item(i);
 
-                    switch (elem.getNodeName()) {
-                        case "Param": {
+                    if (elem.getNodeName().equals("Param")) {
                             String nom = elem.getAttribute("nom");
                             String type = elem.getAttribute("type");
                             Param parametre = new Param(nom,type);
                             parent.getParams().add(parametre);
-                            break;
-                        }
                     }
                 }
             }

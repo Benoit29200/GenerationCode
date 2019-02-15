@@ -7,7 +7,6 @@ import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ParserMetamodele {
@@ -25,11 +24,11 @@ public class ParserMetamodele {
     }
 
 
-    public ArrayList<Modele> parse(String filename, String parametrageFilename) {
+    public ArrayList<Modele> parse(String filename) {
 
         try {
             final org.w3c.dom.Element racine = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(filename)).getDocumentElement();
-            parsePackage(racine, parametrageFilename);
+            parsePackage(racine);
             return this.mesModeles;
 
         } catch (Exception e) {
@@ -39,21 +38,18 @@ public class ParserMetamodele {
     }
 
 
-    private void parsePackage(org.w3c.dom.Element node, String parametrageFilename) {
+    private void parsePackage(org.w3c.dom.Element node) {
         try {
 
             for (int i = 0; i < node.getChildNodes().getLength(); i++) {
                 if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
                     final org.w3c.dom.Element elem = (org.w3c.dom.Element) node.getChildNodes().item(i);
 
-                    switch (elem.getNodeName()) {
-                        case "Modele": {
+                    if (elem.getNodeName().equals("Modele")) {
                             String nomPackage = elem.getAttribute("nom");
                             Modele m = new Modele(nomPackage);
                             this.mesModeles.add(m);
-                            parseEntite(elem, m, parametrageFilename);
-                            break;
-                        }
+                            parseEntite(elem, m);
                     }
                 }
             }
@@ -62,23 +58,19 @@ public class ParserMetamodele {
         }
     }
 
-    private void parseEntite(org.w3c.dom.Element node, Modele parent, String parametrageFilename) {
+    private void parseEntite(org.w3c.dom.Element node, Modele parent) {
         try {
 
             for (int i = 0; i < node.getChildNodes().getLength(); i++) {
                 if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
                     final org.w3c.dom.Element elem = (org.w3c.dom.Element) node.getChildNodes().item(i);
 
-                    switch (elem.getNodeName()) {
-                        case "Entite": {
+                    if (elem.getNodeName().equals("Entite")) {
                             String subtypeof = elem.getAttribute("subtypeof");
                             String nomEntite = elem.getAttribute("nom");
                             Entite monEntite = new Entite(nomEntite, subtypeof, parent);
                             parent.getEntites().add(monEntite);
-                            parseAttribut(elem, monEntite, parametrageFilename);
-
-                            break;
-                        }
+                            parseAttribut(elem, monEntite);
                     }
                 }
             }
@@ -87,23 +79,18 @@ public class ParserMetamodele {
         }
     }
 
-    private void parseAttribut(org.w3c.dom.Element node, Entite parent, String parametrageFilename) {
+    private void parseAttribut(org.w3c.dom.Element node, Entite parent) {
         try {
-
             for (int i = 0; i < node.getChildNodes().getLength(); i++) {
                 if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
                     final org.w3c.dom.Element elem = (org.w3c.dom.Element) node.getChildNodes().item(i);
 
-                    switch (elem.getNodeName()) {
-                        case "Attribut": {
+                    if (elem.getNodeName().equals("Attribut")) {
                             String nomAttribut = elem.getAttribute("nom");
                             String typeAttribut = elem.getAttribute("type");
                             String value = elem.getAttribute("value");
                             Attribut p = new Attribut(nomAttribut,typeAttribut, value, parent);
                             parent.addAttribut(p);
-
-                            break;
-                        }
                     }
                 }
             }

@@ -10,7 +10,7 @@ import java.io.File;
 
 public class ParserParam {
     private static ParserParam ourInstance = new ParserParam();
-    Parametres lesParametres;
+    private Parametres lesParametres;
 
     public static ParserParam getInstance() {
         return ourInstance;

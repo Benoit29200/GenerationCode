@@ -17,13 +17,13 @@ public class GenerateurCodeJava {
     }
 
     private ArrayList<Package> mesPackages;
-    String filenameParameter;
+    private String filenameParameter;
 
     private GenerateurCodeJava() {
     }
 
     public void init(String filenameMetaJava, String filenameParameter){
-        this.mesPackages = ParserMetamodeleJava.getInstance().parse(filenameMetaJava, filenameParameter);
+        this.mesPackages = ParserMetamodeleJava.getInstance().parse(filenameMetaJava);
         this.filenameParameter = filenameParameter;
 
         for(Package monPackage: mesPackages){
@@ -52,7 +52,7 @@ public class GenerateurCodeJava {
     }
 
     private void generateCodeClass(Class c, Package monPackage){
-        StringBuffer code = new StringBuffer("");
+        StringBuffer code = new StringBuffer();
         /**
          * 1- Package
          * 2- Import

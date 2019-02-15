@@ -20,13 +20,13 @@ public class GenerateurMetaJava {
     }
 
     private ArrayList<Modele> mesModeles;
-    StringBuffer metaModeleJavaXML = new StringBuffer("");
+    private StringBuffer metaModeleJavaXML = new StringBuffer();
     private String filenameParameter;
 
     private GenerateurMetaJava() { }
 
     public void init(String filenameCode, String filenameParameter){
-        mesModeles = ParserMetamodele.getInstance().parse(filenameCode,filenameParameter);
+        mesModeles = ParserMetamodele.getInstance().parse(filenameCode);
         this.filenameParameter = filenameParameter;
     }
 
