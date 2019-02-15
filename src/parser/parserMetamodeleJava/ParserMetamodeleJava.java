@@ -4,6 +4,20 @@ import modele.metamodeleJava.*;
 
 import modele.metamodeleJava.Class;
 import modele.metamodeleJava.Package;
+import modele.metamodeleJava.accesseur.getter.GetterArray;
+import modele.metamodeleJava.accesseur.getter.GetterAttribut;
+import modele.metamodeleJava.accesseur.getter.GetterCollection;
+import modele.metamodeleJava.accesseur.setter.SetterArray;
+import modele.metamodeleJava.accesseur.setter.SetterAttribut;
+import modele.metamodeleJava.accesseur.setter.SetterCollection;
+import modele.metamodeleJava.association.AssoSimple;
+import modele.metamodeleJava.association.associationMultiple.Array;
+import modele.metamodeleJava.association.associationMultiple.Collection;
+import modele.metamodeleJava.constructor.ConstructorEmpty;
+import modele.metamodeleJava.constructor.ConstructorParams;
+import modele.metamodeleJava.param.ParamArray;
+import modele.metamodeleJava.param.ParamAttribut;
+import modele.metamodeleJava.param.ParamCollection;
 import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -87,19 +101,44 @@ public class ParserMetamodeleJava {
                     final org.w3c.dom.Element elem = (org.w3c.dom.Element) node.getChildNodes().item(i);
 
                     switch (elem.getNodeName()) {
-                        case "AssoSimple": {
-                            String nomAttribut = elem.getAttribute("nom");
-                            String maValeur = elem.getAttribute("value");
-                            String typeAttribut = elem.getAttribute("type");
-                            Attribut attribut = new Attribut(nomAttribut, typeAttribut, maValeur);
-                            parent.getAttributs().add(attribut);
-                            break;
-                        }
 
                         case "Import": {
                             String nomImport = elem.getAttribute("nom");
                             Import anImport = new Import(nomImport);
                             parent.getImports().add(anImport);
+                            break;
+                        }
+
+                        case "AssoSimple": {
+                            String nomAttribut = elem.getAttribute("nom");
+                            String maValeur = elem.getAttribute("value");
+                            String typeAttribut = elem.getAttribute("type");
+                            AssoSimple assoSimple = new AssoSimple(nomAttribut,typeAttribut, maValeur, parent);
+                            parent.getAssociations().add(assoSimple);
+
+                            break;
+                        }
+
+                        case "Collection": {
+
+                            String nomCollection = elem.getAttribute("nom");
+                            String typeCollection = elem.getAttribute("type");
+                            String soustypeCollection = elem.getAttribute("soustype");
+                            int cardMin = Integer.parseInt(elem.getAttribute("cardMin"));
+                            int cardMax = Integer.parseInt(elem.getAttribute("cardMax"));
+                            Collection collection = new Collection(nomCollection,typeCollection,soustypeCollection,parent,cardMin,cardMax);
+                            parent.getAssociations().add(collection);
+                            break;
+                        }
+
+                        case "Array": {
+                            String nomArray = elem.getAttribute("nom");
+                            String typeArray = elem.getAttribute("type");
+                            int cardMin = Integer.parseInt(elem.getAttribute("cardMin"));
+                            int cardMax = Integer.parseInt(elem.getAttribute("cardMax"));
+                            Array array = new Array(nomArray,typeArray,parent, cardMin,cardMax);
+                            parent.getAssociations().add(array);
+
                             break;
                         }
 
@@ -118,20 +157,56 @@ public class ParserMetamodeleJava {
                             break;
                         }
 
-                        case "Getter": {
-                            String nom = elem.getAttribute("nom");
-                            String type = elem.getAttribute("type");
-                            Getter getter = new Getter(nom,type);
-                            parent.getAccesseurs().add(getter);
+                        case "GetterAttribut": {
+                            String nomGetterAttribut = elem.getAttribute("nom");
+                            String typeGetterAttribut = elem.getAttribute("type");
+                            GetterAttribut getterAttribut = new GetterAttribut(nomGetterAttribut,typeGetterAttribut);
+                            parent.getAccesseurs().add(getterAttribut);
+
                             break;
                         }
-                        case "Setter": {
-                            String nom = elem.getAttribute("nom");
-                            String type = elem.getAttribute("type");
-                            Setter setter = new Setter(nom,type);
-                            parent.getAccesseurs().add(setter);
+
+                        case "GetterCollection": {
+                            String nomGetterCollection = elem.getAttribute("nom");
+                            String typeGetterCollection= elem.getAttribute("type");
+                            String soustypeGetterCollection = elem.getAttribute("soustype");
+                            GetterCollection getterCollection = new GetterCollection(nomGetterCollection,typeGetterCollection,soustypeGetterCollection);
+                            parent.getAccesseurs().add(getterCollection);
                             break;
                         }
+
+                        case "GetterArray": {
+                            String nomGetterArray = elem.getAttribute("nom");
+                            String typeGetterArray = elem.getAttribute("type");
+                            GetterArray getterArray = new GetterArray(nomGetterArray,typeGetterArray);
+                            parent.getAccesseurs().add(getterArray);
+                            break;
+                        }
+
+                        case "SetterAttribut": {
+                            String nomSetterAttribut = elem.getAttribute("nom");
+                            String typeSetterAttribut = elem.getAttribute("type");
+                            SetterAttribut setterAttribut = new SetterAttribut(nomSetterAttribut,typeSetterAttribut);
+                            parent.getAccesseurs().add(setterAttribut);
+                            break;
+                        }
+                        case "SetterCollection": {
+                            String nomSetterCollection = elem.getAttribute("nom");
+                            String typeSetterCollection= elem.getAttribute("type");
+                            String soustypeSetterCollection = elem.getAttribute("soustype");
+                            SetterCollection setterCollection = new SetterCollection(nomSetterCollection,typeSetterCollection,soustypeSetterCollection);
+                            parent.getAccesseurs().add(setterCollection);
+                            break;
+                        }
+
+                        case "SetterArray": {
+                            String nomSetterArray = elem.getAttribute("nom");
+                            String typeSetterArray = elem.getAttribute("type");
+                            SetterArray setterArray = new SetterArray(nomSetterArray,typeSetterArray);
+                            parent.getAccesseurs().add(setterArray);
+                            break;
+                        }
+
                     }
                 }
             }
@@ -146,16 +221,37 @@ public class ParserMetamodeleJava {
                 if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
                     final org.w3c.dom.Element elem = (org.w3c.dom.Element) node.getChildNodes().item(i);
 
-                    if (elem.getNodeName().equals("Param")) {
-                            String nom = elem.getAttribute("nom");
-                            String type = elem.getAttribute("type");
-                            Param parametre = new Param(nom,type);
-                            parent.getParams().add(parametre);
+                    switch (elem.getNodeName()) {
+
+                        case "ParamAttribut": {
+                            String nomParamAttribut = elem.getAttribute("nom");
+                            String typeParamAttribut = elem.getAttribute("type");
+                            ParamAttribut paramAttribut = new ParamAttribut(nomParamAttribut,typeParamAttribut);
+                            parent.getParams().add(paramAttribut);
+                            break;
+                        }
+
+                        case "ParamCollection": {
+                            String nomParamCollection = elem.getAttribute("nom");
+                            String typeParamCollection = elem.getAttribute("type");
+                            String soustypeParamCollection = elem.getAttribute("soustype");
+                            ParamCollection paramCollection = new ParamCollection(nomParamCollection,typeParamCollection,soustypeParamCollection);
+                            parent.getParams().add(paramCollection);
+                            break;
+                        }
+
+                        case "ParamArray": {
+                            String nomParamArray = elem.getAttribute("nom");
+                            String typeParamArray = elem.getAttribute("type");
+                            ParamArray paramArray = new ParamArray(nomParamArray,typeParamArray);
+                            parent.getParams().add(paramArray);
+                            break;
+                        }
                     }
                 }
             }
         } catch (Exception e) {
-            System.out.println("erreur parse entite : " + e.getMessage());
+            System.out.println("erreur parse constructor param : " + e.getMessage());
         }
     }
 }

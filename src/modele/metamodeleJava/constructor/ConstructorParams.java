@@ -1,29 +1,18 @@
-package modele.metamodeleJava;
+package modele.metamodeleJava.constructor;
 
 import generateur.java.GenerateurCodeJava;
+import modele.metamodeleJava.Constructor;
+import modele.metamodeleJava.Param;
 
 import java.util.ArrayList;
 
 public class ConstructorParams extends Constructor {
 
-    ArrayList<Param> params;
-
-    public ConstructorParams() {
-    }
+    private ArrayList<Param> params;
 
     public ConstructorParams(String nom) {
         this.nom = nom;
         this.params = new ArrayList<>();
-    }
-
-    @Override
-    public String getNom() {
-        return this.nom;
-    }
-
-    @Override
-    public void setNom(String nom) {
-        this.nom = nom;
     }
 
     public ArrayList<Param> getParams() {

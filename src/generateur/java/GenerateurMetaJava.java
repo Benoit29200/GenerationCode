@@ -109,7 +109,7 @@ public class GenerateurMetaJava {
 
     public void generateGetterSetterCollection(Collection col){
         this.metaModeleJavaXML.append("\t\t\t<GetterCollection nom=\""+col.getNom()+"\" type=\""+this.getTypeJavaFromMinispec(col.getType())+"\" soustype=\""+ col.getSoustype() +"\"/>\n");
-        this.metaModeleJavaXML.append("\t\t\t<SetterGetterCollection nom=\""+col.getNom()+"\" type=\""+this.getTypeJavaFromMinispec(col.getType())+"\" soustype=\""+ col.getSoustype() +"\"/>\n");
+        this.metaModeleJavaXML.append("\t\t\t<SetterCollection nom=\""+col.getNom()+"\" type=\""+this.getTypeJavaFromMinispec(col.getType())+"\" soustype=\""+ col.getSoustype() +"\"/>\n");
     }
 
     public void generateParamAttributForConstructor(AssoSimple ass){

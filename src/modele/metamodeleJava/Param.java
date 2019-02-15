@@ -1,17 +1,9 @@
 package modele.metamodeleJava;
 
-public class Param {
+public abstract class Param {
 
-    private String nom;
-    private String type;
-
-    public Param(String nom, String type) {
-        this.nom = nom;
-        this.type = type;
-    }
-
-    public Param() {
-    }
+    protected String nom;
+    protected String type;
 
     public String getNom() {
         return nom;
@@ -27,13 +19,5 @@ public class Param {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return "Param{" +
-                "nom='" + nom + '\'' +
-                ", type='" + type + '\'' +
-                '}';
     }
 }

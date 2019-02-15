@@ -1,9 +1,10 @@
 package generateur.java;
 
-import modele.metamodeleJava.Attribut;
 import modele.metamodeleJava.*;
 import modele.metamodeleJava.Class;
 import modele.metamodeleJava.Package;
+import modele.metamodeleJava.constructor.ConstructorEmpty;
+import modele.metamodeleJava.constructor.ConstructorParams;
 import parser.parserMetamodeleJava.ParserMetamodeleJava;
 import java.io.File;
 import java.io.FileWriter;
@@ -59,7 +60,7 @@ public class GenerateurCodeJava {
          * 3- Entête de classe
          * 4- Attributs
          * 5- Constructeur
-         * 6- Accesseur
+         * 6- accesseur
          *
          * 7- Création du fichier
          */

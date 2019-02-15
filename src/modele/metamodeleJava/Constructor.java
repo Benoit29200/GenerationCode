@@ -6,7 +6,13 @@ public abstract class Constructor {
 
     protected String nom;
 
-    public abstract String getNom();
-    public abstract  void setNom(String nom);
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
     public abstract void generateCodeConstructor(GenerateurCodeJava generateur, StringBuffer code);
 }

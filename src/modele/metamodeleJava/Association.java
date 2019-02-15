@@ -1,12 +1,12 @@
 package modele.metamodeleJava;
 
+import modele.metamodele.Entite;
 
-import generateur.java.GenerateurCodeJava;
-
-public abstract class Accesseur {
+public abstract class Association {
 
     protected String nom;
     protected String type;
+    protected Class parent;
 
     public String getNom() {
         return nom;
@@ -24,6 +24,12 @@ public abstract class Accesseur {
         this.type = type;
     }
 
-    public abstract void generateAccesseur(GenerateurCodeJava generateur, StringBuffer code);
+    public Class getParent() {
+        return parent;
+    }
+
+    public void setParent(Class parent) {
+        this.parent = parent;
+    }
 
 }

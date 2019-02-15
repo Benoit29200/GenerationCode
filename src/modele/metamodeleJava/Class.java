@@ -9,7 +9,7 @@ public class Class {
     private ArrayList<Import> imports;
     private ArrayList<Constructor> constructors;
     private ArrayList<Accesseur> accesseurs;
-    private ArrayList<Attribut> attributs;
+    private ArrayList<Association> associations;
 
     public Class(String nom, String subtypeof) {
         this.nom = nom;
@@ -17,7 +17,7 @@ public class Class {
         this.imports = new ArrayList<>();
         this.constructors = new ArrayList<>();
         this.accesseurs = new ArrayList<>();
-        this.attributs = new ArrayList<>();
+        this.associations = new ArrayList<>();
     }
 
     public String getNom() {
@@ -52,12 +52,12 @@ public class Class {
         this.accesseurs = accesseurs;
     }
 
-    public ArrayList<Attribut> getAttributs() {
-        return attributs;
+    public ArrayList<Association> getAssociations() {
+        return associations;
     }
 
-    public void setAttributs(ArrayList<Attribut> attributs) {
-        this.attributs = attributs;
+    public void setAssociations(ArrayList<Association> attributs) {
+        this.associations = attributs;
     }
 
     public ArrayList<Import> getImports() {
@@ -76,7 +76,7 @@ public class Class {
                 ", imports=" + imports +
                 ", constructors=" + constructors +
                 ", accesseurs=" + accesseurs +
-                ", attributs=" + attributs +
+                ", associations=" + associations +
                 '}';
     }
 }
