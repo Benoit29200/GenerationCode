@@ -1,5 +1,6 @@
 package modele.metamodeleJava.param;
 
+import generateur.java.GenerateurCodeJava;
 import modele.metamodeleJava.Param;
 
 public class ParamCollection extends Param {
@@ -10,6 +11,11 @@ public class ParamCollection extends Param {
         this.nom = nom;
         this.type = type;
         this.soustype = soustype;
+    }
+
+    @Override
+    public void generateCodeEnteteConstructorParam(GenerateurCodeJava generateur) {
+        generateur.generateCodeEnteteConstructorParamCollection(this);
     }
 
     public String getSoustype() {

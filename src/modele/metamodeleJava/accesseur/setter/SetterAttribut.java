@@ -11,8 +11,8 @@ public class SetterAttribut extends Setter {
     }
 
     @Override
-    public void generateAccesseur(GenerateurCodeJava generateur, StringBuffer code) {
-        // TODO
+    public void visitForGenerateAccesseur(GenerateurCodeJava generateur) {
+        generateur.generateCodeSetterAttribut(this);
     }
 
     @Override

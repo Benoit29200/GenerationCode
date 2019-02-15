@@ -13,9 +13,17 @@ public class GetterCollection extends Getter {
         this.soustype = soustype;
     }
 
+    public String getSoustype() {
+        return soustype;
+    }
+
+    public void setSoustype(String soustype) {
+        this.soustype = soustype;
+    }
+
     @Override
-    public void generateAccesseur(GenerateurCodeJava generateur, StringBuffer code) {
-        // TODO
+    public void visitForGenerateAccesseur(GenerateurCodeJava generateur) {
+        generateur.generateCodeGetterCollection(this);
     }
 
     @Override

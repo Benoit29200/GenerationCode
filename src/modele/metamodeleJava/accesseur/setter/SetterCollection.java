@@ -13,9 +13,17 @@ public class SetterCollection extends Setter {
         this.soustype = soustype;
     }
 
+    public String getSoustype() {
+        return soustype;
+    }
+
+    public void setSoustype(String soustype) {
+        this.soustype = soustype;
+    }
+
     @Override
-    public void generateAccesseur(GenerateurCodeJava generateur, StringBuffer code) {
-        // TODO
+    public void visitForGenerateAccesseur(GenerateurCodeJava generateur) {
+        generateur.generateCodeSetterCollection(this);
     }
 
     @Override

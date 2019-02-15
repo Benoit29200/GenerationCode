@@ -15,4 +15,11 @@ public class Import {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
+    @Override
+    public String toString() {
+        return "Import{" +
+                "nom='" + nom + '\'' +
+                '}';
+    }
 }

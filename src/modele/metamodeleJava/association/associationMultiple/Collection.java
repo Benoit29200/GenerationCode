@@ -1,6 +1,7 @@
 package modele.metamodeleJava.association.associationMultiple;
 
 
+import generateur.java.GenerateurCodeJava;
 import modele.metamodeleJava.Class;
 import modele.metamodeleJava.association.AssoMultiple;
 
@@ -25,6 +26,10 @@ public class Collection extends AssoMultiple {
         this.soustype = soustype;
     }
 
+    @Override
+    public void visitForGenerateCodeAssociation(GenerateurCodeJava generateur) {
+        generateur.generateCodeCollection(this);
+    }
 
     @Override
     public String toString() {

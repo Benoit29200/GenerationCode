@@ -11,8 +11,8 @@ public class SetterArray extends Setter {
     }
 
     @Override
-    public void generateAccesseur(GenerateurCodeJava generateur, StringBuffer code) {
-        // TODO
+    public void visitForGenerateAccesseur(GenerateurCodeJava generateur) {
+        generateur.generateCodeSetterArray(this);
     }
 
     @Override

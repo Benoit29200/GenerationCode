@@ -1,5 +1,6 @@
 package modele.metamodeleJava;
 
+import generateur.java.GenerateurCodeJava;
 import modele.metamodele.Entite;
 
 public abstract class Association {
@@ -31,5 +32,7 @@ public abstract class Association {
     public void setParent(Class parent) {
         this.parent = parent;
     }
+
+    public abstract void visitForGenerateCodeAssociation(GenerateurCodeJava generateur);
 
 }

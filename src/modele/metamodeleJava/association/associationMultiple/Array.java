@@ -1,5 +1,6 @@
 package modele.metamodeleJava.association.associationMultiple;
 
+import generateur.java.GenerateurCodeJava;
 import modele.metamodeleJava.Class;
 import modele.metamodeleJava.association.AssoMultiple;
 
@@ -11,6 +12,11 @@ public class Array extends AssoMultiple {
         this.parent = parent;
         this.cardMin = cardMin;
         this.cardMax = cardMax;
+    }
+
+    @Override
+    public void visitForGenerateCodeAssociation(GenerateurCodeJava generateur) {
+        generateur.generateCodeArray(this);
     }
 
     @Override

@@ -10,10 +10,6 @@ public class GetterArray extends Getter {
         this.type = type;
     }
 
-    @Override
-    public void generateAccesseur(GenerateurCodeJava generateur, StringBuffer code) {
-        // TODO
-    }
 
     @Override
     public String toString() {
@@ -21,5 +17,10 @@ public class GetterArray extends Getter {
                 "nom='" + nom + '\'' +
                 ", type='" + type + '\'' +
                 '}';
+    }
+
+    @Override
+    public void visitForGenerateAccesseur(GenerateurCodeJava generateur) {
+        generateur.generateCodeGetterArray(this);
     }
 }

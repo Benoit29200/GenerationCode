@@ -1,5 +1,7 @@
 package modele.metamodeleJava;
 
+import generateur.java.GenerateurCodeJava;
+
 public abstract class Param {
 
     protected String nom;
@@ -20,4 +22,8 @@ public abstract class Param {
     public void setType(String type) {
         this.type = type;
     }
+
+    public abstract void generateCodeEnteteConstructorParam(GenerateurCodeJava generateur);
+
+
 }

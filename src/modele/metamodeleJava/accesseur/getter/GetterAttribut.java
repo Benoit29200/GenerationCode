@@ -14,9 +14,8 @@ public class GetterAttribut extends Getter {
     }
 
     @Override
-    public void generateAccesseur(GenerateurCodeJava generateur, StringBuffer code) {
-        // TODO
-        // generateur.generateCodeGetter(this,code);
+    public void visitForGenerateAccesseur(GenerateurCodeJava generateur) {
+        generateur.generateCodeGetterAttribut(this);
     }
 
     @Override

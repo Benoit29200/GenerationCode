@@ -1,6 +1,7 @@
 package modele.metamodeleJava.association;
 
 
+import generateur.java.GenerateurCodeJava;
 import modele.metamodeleJava.Association;
 import modele.metamodeleJava.Class;
 
@@ -26,6 +27,10 @@ public class AssoSimple extends Association {
         this.value = value;
     }
 
+    @Override
+    public void visitForGenerateCodeAssociation(GenerateurCodeJava generateur) {
+        generateur.generateCodeAttribut(this);
+    }
 
     @Override
     public String toString() {

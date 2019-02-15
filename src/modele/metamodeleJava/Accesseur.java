@@ -24,6 +24,6 @@ public abstract class Accesseur {
         this.type = type;
     }
 
-    public abstract void generateAccesseur(GenerateurCodeJava generateur, StringBuffer code);
+    public abstract void visitForGenerateAccesseur(GenerateurCodeJava generateur);
 
 }
