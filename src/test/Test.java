@@ -1,5 +1,6 @@
 package test;
 
+
 import generateur.java.GenerateurCodeJava;
 import generateur.java.GenerateurMetaJava;
 
@@ -12,8 +13,11 @@ public class Test {
         generateurMetaJava.generate("metaModeleForJava.xml");
 
         GenerateurCodeJava generateurCodeJava = GenerateurCodeJava.getInstance();
-        generateurCodeJava.init("metaModeleForJava.xml", "parametrage.xml");
-        generateurCodeJava.generate();
+        if(generateurCodeJava.init("metaModeleForJava.xml", "parametrage.xml")){
+            generateurCodeJava.generate();
+        }
+
+
 
     }
 }

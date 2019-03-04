@@ -37,9 +37,10 @@ public class GenerateurCodeJava {
         this.code = new StringBuffer();
     }
 
-    public void init(String filenameMetaJava, String filenameParameter){
+    public boolean init(String filenameMetaJava, String filenameParameter){
         this.mesPackages = ParserMetamodeleJava.getInstance().parse(filenameMetaJava);
         this.filenameParameter = filenameParameter;
+
 
         for(Package monPackage: mesPackages){
             // création du répertoire du package
@@ -48,12 +49,10 @@ public class GenerateurCodeJava {
             //création du répertoire du package
             boolean isCreated = directory.mkdirs();
 
-            // si le répertoire n'est pas créé on quitte le programme
-            if(!isCreated){
-                System.err.println("Erreur à la création du répertoire du package "+monPackage.getNom()+".");
-                System.exit(0);
-            }
+            if(!isCreated) return false;
         }
+
+        return true;
     }
     // on génère chaque class du modèle
     public void generate(){
@@ -62,6 +61,8 @@ public class GenerateurCodeJava {
                 this.generateCodeClass(c, monPackage);
             }
         }
+        GenerateurRepository generateurRepository = GenerateurRepository.getInstance();
+        generateurRepository.init(this.mesPackages,"Repository");
     }
 
     private void generateCodeClass(Class c, Package monPackage){
@@ -215,6 +216,8 @@ public class GenerateurCodeJava {
         }catch(Exception e){
             System.err.println("Problème écriture du fichier métaModeleJava");
         }
+
+
 
     }
 
