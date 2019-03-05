@@ -55,14 +55,14 @@ public class GenerateurCodeJava {
         return true;
     }
     // on génère chaque class du modèle
-    public void generate(){
+    public void generate(String nameRepository){
         for(Package monPackage: mesPackages){
             for(Class c: monPackage.getClasses()){
                 this.generateCodeClass(c, monPackage);
             }
         }
         GenerateurRepository generateurRepository = GenerateurRepository.getInstance();
-        generateurRepository.init(this.mesPackages,"Repository");
+        generateurRepository.init(this.mesPackages, nameRepository);
     }
 
     private void generateCodeClass(Class c, Package monPackage){

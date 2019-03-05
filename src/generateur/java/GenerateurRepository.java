@@ -28,10 +28,10 @@ public class GenerateurRepository {
         this.generateImport();
         this.generateHashMap();
         this.generateInstanceAndConstructor();
-        this.generateGuetter();
-        this.generateMethodeAdd();
+        this.generateAddddAndGetter();
         this.generateSerialize();
         this.generateDeserialize();
+        this.generateClear();
         code.append("}");
 
 
@@ -39,7 +39,7 @@ public class GenerateurRepository {
     }
 
     private void generateImport(){
-        code.append("package Repository;\n\n");
+        code.append("package repository;\n\n");
 
         for(Package p: this.packages){
             for(Class c: p.getClasses()){
@@ -64,128 +64,83 @@ public class GenerateurRepository {
     }
 
     private void generateHashMap(){
-
-        for(Package p:this.packages){
-            for(Class c: p.getClasses()){
-                code.append("private HashMap<String, ")
-                    .append(c.getNom())
-                    .append("> ")
-                    .append(c.getNom().toLowerCase())
-                    .append("HashMap")
-                    .append(";\n");
-            }
-            code.append("\n");
-        }
+        code.append("private HashMap<String, Object> classHashMap;\n")
+            .append("private HashMap<String, Class> instanceHashMap;\n");
     }
 
     private void generateInstanceAndConstructor(){
-        code.append("private static ")
-            .append(this.name)
-            .append(" instance;\n\n");
-
-    code.append("private ")
-        .append(this.name)
-        .append(" (){\n");
-
-        for(Package p:this.packages){
-            for(Class c: p.getClasses()){
-                code.append("this.")
-                    .append(c.getNom().toLowerCase())
-                    .append("HashMap")
-                    .append(" =  new HashMap<>();\n");
-            }
-        }
-
-        code.append("}\n");
-
-    code.append("public static ")
-        .append(this.name)
-        .append(" getInstance(){\n");
-    code.append("if(instance==null) instance = new ")
-        .append(this.name)
-        .append(" ();\n");
-    code.append("return instance;\n");
-    code.append("}\n");
-    }
-
-    private void generateGuetter(){
+        code.append("private static ").append(this.name).append(" instance;\n\n");
+        code.append("private ").append(this.name).append(" (){\n")
+            .append("this.classHashMap = new HashMap<>();\n")
+            .append("this.instanceHashMap = new HashMap<>();\n");
 
         for(Package p:this.packages) {
             for (Class c : p.getClasses()) {
-                code.append("public HashMap<String,")
-                    .append(c.getNom())
-                    .append("> get"+c.getNom()+"HashMap(){ return this."+ c.getNom().toLowerCase() +"HashMap; }\n");
+                code.append("this.instanceHashMap.put(\""+ c.getNom() +"\", "+c.getNom()+".class);\n");
             }
         }
+
+        code.append("}\n")
+            .append("public static ")
+            .append(this.name)
+            .append(" getInstance(){\n")
+            .append("if(instance==null) instance = new ")
+            .append(this.name)
+            .append(" ();\n")
+            .append("return instance;\n")
+            .append("}\n");
     }
 
-    private void generateMethodeAdd(){
-        for(Package p: this.packages){
-            for(Class c: p.getClasses()){
-                code.append("public void add"+c.getNom()+"(String key, "+c.getNom()+" value){");
-                    code.append("this."+c.getNom().toLowerCase()+"HashMap.put(key,value);}\n");
-            }
-        }
-    }
 
     private void generateSerialize(){
-        code.append("public void serialize(String filename){\n");
-        code.append("File XmlFile = new File(filename);\n");
-        code.append("StringBuilder builder = new StringBuilder();\n");
-
-        for(Package p:this.packages) {
-            for (Class c : p.getClasses()) {
-                code.append("for (Map.Entry<String,"+c.getNom()+"> e : "+c.getNom().toLowerCase()+"HashMap.entrySet()){");
-                code.append("builder.append(\"<"+c.getNom()+" id=\\\"\"+e.getKey()+\"\\\">\\n\");}\n");
-            }
-        }
-
-        code.append("try{\n");
-        code.append("FileWriter fichier = new FileWriter(filename);\n");
-        code.append("fichier.write (builder.toString());\n");
-        code.append("fichier.close();\n");
-        code.append("}catch(Exception e){\n");
-        code.append("System.err.println(\"Problème écriture du lot d'instance\");\n");
-        code.append("}\n");
+        code.append("public void serialize(String filename){\n")
+            .append("File XmlFile = new File(filename);\n")
+            .append("StringBuilder builder = new StringBuilder();\n")
+            .append("builder.append(\"<repository>\");")
+            .append("for (Map.Entry<String,Object> e : classHashMap.entrySet()){")
+            .append("builder.append(\"<\"+ e.getValue().getClass().getSimpleName()+\" id=\\\"\"+e.getKey()+\"\\\"/>\\n\");}\n");
 
 
+        code.append("builder.append(\"</repository>\");")
+            .append("try{\n")
+            .append("FileWriter fichier = new FileWriter(filename);\n")
+            .append("fichier.write (builder.toString());\n")
+            .append("fichier.close();\n")
+            .append("}catch(Exception e){\n")
+            .append("System.err.println(\"Problème écriture du lot d'instance\");\n")
+            .append("}\n")
+            .append("}");
+    }
+
+    private void generateClear(){
+        code.append("public void clear(){\n");
+        code.append("this.classHashMap = new HashMap<>();\n");
         code.append("}");
+    }
+
+    private void generateAddddAndGetter(){
+        code.append("public void add(String id, Object o){\n this.classHashMap.put(id,o);\n }\n public Object get(String id){ \nreturn this.classHashMap.get(id);\n }\n");
     }
 
     private void generateDeserialize(){
 
 
-        code.append("private void parseRepository(String filename) {")
-        .append("try {")
-        .append("final org.w3c.dom.Element node = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(filename)).getDocumentElement();")
+        code.append("public void parseRepository(String filename) {")
+            .append("try {")
+            .append("final org.w3c.dom.Element node = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(filename)).getDocumentElement();")
 
-        .append("for (int i = 0; i < node.getChildNodes().getLength(); i++) {")
-        .append("if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {")
-        .append("final org.w3c.dom.Element elem = (org.w3c.dom.Element) node.getChildNodes().item(i);");
+            .append("for (int i = 0; i < node.getChildNodes().getLength(); i++) {")
+            .append("if (node.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {")
+            .append("final org.w3c.dom.Element elem = (org.w3c.dom.Element) node.getChildNodes().item(i);")
 
-
-        for(Package p:this.packages) {
-            for (Class c : p.getClasses()) {
-
-
-                code.append("if (elem.getNodeName().equals(\""+c.getNom()+"\")) {");
-                    code.append("String id = elem.getAttribute(\"id\");");
-                    code.append(c.getNom()+ " "+c.getNom().toLowerCase()+" = new "+c.getNom()+"();");
-                    code.append("this.add"+c.getNom()+"(id,"+c.getNom().toLowerCase()+");");
-
-                code.append("}");
-
-
-
-            }
-        }
-
-        code.append("}")
-        .append("}")
-        .append("} catch (Exception e) {")
-        .append("System.out.println(\"erreur parsing repository :\" + e.getMessage());")
-        .append("}")
-        .append("}");
+            .append("String id = elem.getAttribute(\"id\");\n")
+            .append("this.classHashMap.put(id,this.instanceHashMap.get(elem.getNodeName()).newInstance());\n")
+            .append("}")
+            .append("}")
+            .append("} catch (Exception e) {")
+            .append("System.out.println(\"erreur parsing repository :\" + e.getMessage());")
+            .append("}")
+            .append("}");
     }
 
     private void ecritureFichier(){

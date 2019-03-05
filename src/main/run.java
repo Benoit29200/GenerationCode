@@ -1,10 +1,12 @@
-package test;
+package main;
+
 
 
 import generateur.java.GenerateurCodeJava;
 import generateur.java.GenerateurMetaJava;
 
-public class Test {
+
+public class run {
 
     public static void main(String[] args) {
 
@@ -14,8 +16,10 @@ public class Test {
 
         GenerateurCodeJava generateurCodeJava = GenerateurCodeJava.getInstance();
         if(generateurCodeJava.init("metaModeleForJava.xml", "parametrage.xml")){
-            generateurCodeJava.generate();
+            generateurCodeJava.generate("Repository");
         }
+
+
 
 
 

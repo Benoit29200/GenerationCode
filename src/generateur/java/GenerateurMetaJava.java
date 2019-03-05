@@ -2,6 +2,7 @@ package generateur.java;
 
 import modele.metamodele.*;
 import modele.parametre.Parametres;
+import org.apache.commons.lang3.StringUtils;
 import parser.parserParametre.ParserParam;
 import modele.parametre.TypeParam;
 import parser.parserMetamodele.ParserMetamodele;
@@ -48,7 +49,8 @@ public class GenerateurMetaJava {
     // Méthode appelé par le visiteur des entités
     public void generateEntity(Entite e){
 
-        if(e.getSubtypeof().isEmpty()){
+        // Si l'entité est enfant d'une classe
+        if(StringUtils.isNotBlank(e.getSubtypeof())){
             this.metaModeleJavaXML.append("\t\t<Class nom=\""+e.getNom()+"\">\n");
         } else{
             this.metaModeleJavaXML.append("\t\t<Class nom=\""+e.getNom()+"\" subtypeof=\""+e.getSubtypeof()+"\">\n");
